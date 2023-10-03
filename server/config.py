@@ -6,7 +6,7 @@ from models.dbconfig import db
 
 
 app = Flask(__name__)
-
+app.secret_key = b'Y\xf1Xz\x00\xad|eQ\x80t \xca\x1a\x10K'
 app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///destinations.db'
 app.config['SQLALCHEMT_TRACK_MODIFICATIONS']= False
 migrate=Migrate(app,db)
