@@ -12,18 +12,35 @@ with app.app_context():
     User.query.delete()
     Location.query.delete()
     Destination.query.delete()
+    Review.query.delete()
     ReviewDestination.query.delete()
     db.session.commit()
     fake= Faker()
+    # users = []
+    # for _ in range(5):
+    #     user = User(username=fake.name(),password=fake.sentence(),email=fake.name())
+    #     users.append(user)
+    # db.session.add_all(users)
+    # db.session.commit()
     users = []
-    for _ in range(5):
-        user = User(username=fake.name(),password=fake.sentence(),email=fake.name())
+    usernames = []
+    for i in range(10):
+        username = fake.first_name()
+        while username in usernames:
+            username = fake.first_name()
+        usernames.append(username)
+        user = User(
+            username=username,
+            email = fake.email()
+
+        )
+        user.password_hash = user.username + 'password'
         users.append(user)
     db.session.add_all(users)
     db.session.commit()
     locations = []
     for _ in range(5):
-        location = Location(name=fake.address(),img_url=fake.sentence(),description=fake.sentence())
+        location = Location(name=fake.address(),img_url=fake.url(),description=fake.sentence())
         locations.append(location)
     db.session.add_all(locations)
     db.session.commit()
@@ -31,7 +48,7 @@ with app.app_context():
     # random_location= rc(locations)
     for _ in range(5):
         random_location = rc(locations)
-        destination = Destination(name=fake.address(),image_url=fake.sentence(),description=fake.sentence(),location_id=random_location.id)
+        destination = Destination(name=fake.address(),image_url=fake.url(),description=fake.sentence(),location_id=random_location.id)
         destinations.append(destination)
     db.session.add_all(destinations)
     db.session.commit()
