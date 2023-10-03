@@ -4,7 +4,7 @@ from models.review import Review
 from models.reviewdestination import ReviewDestination
 from models.destination import Destination
 from models.user import User
-from flask_restful import Resource
+from flask_restful import Resource, reqparse
 from flask import jsonify,session,request
 
 
@@ -55,6 +55,55 @@ api.add_resource(Login,"/login",endpoint="login")
 api.add_resource(Logout,"/logout",endpoint="logout")
 api.add_resource(Signup,"/signup",endpoint="signup")
 api.add_resource(CheckSession,"/checksession",endpoint="checksession")
+
+
+
+class ReviewByID(Resource):
+    patch_parser = reqparse.RequestParser()
+    patch_parser.add_argument('rating', type=int, help='New rating for the review')
+    patch_parser.add_argument('comment', type=str, help='New comment for the review')
+
+    def get(self, review_id):
+        review = Review.query.get(review_id)
+        if review:
+            return jsonify({
+                'id': review.id,
+                'rating': review.rating,
+                'comment': review.comment,
+                'user_id': review.user_id
+            })
+        else:
+            return {'message': 'Review not found'}, 404
+
+    def delete(self, review_id):
+        review = Review.query.get(review_id)
+        if review:
+            db.session.delete(review)
+            db.session.commit()
+            return {'message': 'Review deleted successfully'}
+        else:
+            return {'message': 'Review not found'}, 404
+
+    def patch(self, review_id):
+        review = Review.query.get(review_id)
+        if review:
+            args = self.patch_parser.parse_args()
+            if 'rating' in args:
+                review.rating = args['rating']
+            if 'comment' in args:
+                review.comment = args['comment']
+
+            db.session.commit()
+            return jsonify({
+                'id': review.id,
+                'rating': review.rating,
+                'comment': review.comment,
+                'user_id': review.user_id
+            })
+        else:
+            return {'message': 'Review not found'}, 404
+
+api.add_resource(ReviewByID,"/review_by_id/<int:review_id>",endpoint="review_by_id/<int:review_id>")
 
 
 if __name__=="__main__":
