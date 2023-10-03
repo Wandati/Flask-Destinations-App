@@ -6,3 +6,5 @@ class User(db.Model):
     email = db.Column(db.String(50))
     password = db.Column(db.String(50))
     reviews = db.relationship('Review',backref='user')
+    
+    
