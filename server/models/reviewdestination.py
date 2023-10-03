@@ -7,3 +7,6 @@ class ReviewDestination(db.Model):
     
     review= db.relationship('Review',back_populates='destinations')
     destination= db.relationship('Destination',back_populates='reviews')
+    
+    def __repr__(self):
+        return f"review_id: {self.review_id} for destination_id: {self.destination_id}"
