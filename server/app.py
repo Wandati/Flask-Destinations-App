@@ -60,6 +60,21 @@ class ReviewResource(Resource):
         ]
         return review_list
     
+    def post(self):
+        try:
+            data = request.json  
+            new_review = Review(
+                rating=data['rating'],
+                comment=data['comment'],
+                user_id=data['user_id']
+            )
+            db.session.add(new_review)
+            db.session.commit()
+            return {'message': 'Review successfully added', 'id': new_review.id}, 201
+        except Exception as e:
+            return {'error': str(e)}, 400
+
+    
 class ReviewById(Resource):
     def get(self, review_id):
         # Retrieve a specific review using its ID
@@ -67,6 +82,8 @@ class ReviewById(Resource):
         if review is None:
             return {'error': 'Review not found'}, 404
         return {'id': review.id, 'rating': review.rating, 'comment': review.comment, 'user_id': review.user_id}
+    
+
             
     
 api.add_resource(Login,"/login",endpoint="login")
