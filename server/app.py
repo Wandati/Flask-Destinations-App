@@ -49,12 +49,22 @@ class Logout(Resource):
             session["user_id"] = None
             return {},204
         return {"error":"Unauthorized action"},401
+    
+class ReviewById(Resource):
+    def get(self, review_id):
+        # Retrieve a specific review using its ID
+        review = Review.query.get(review_id)
+        if review is None:
+            return {'error': 'Review not found'}, 404
+        return {'id': review.id, 'rating': review.rating, 'comment': review.comment, 'user_id': review.user_id}
             
     
 api.add_resource(Login,"/login",endpoint="login")
 api.add_resource(Logout,"/logout",endpoint="logout")
 api.add_resource(Signup,"/signup",endpoint="signup")
 api.add_resource(CheckSession,"/checksession",endpoint="checksession")
+api.add_resource(ReviewById, '/reviews/<int:review_id>')
+
 
 
 if __name__=="__main__":
