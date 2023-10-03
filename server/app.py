@@ -50,6 +50,16 @@ class Logout(Resource):
             return {},204
         return {"error":"Unauthorized action"},401
     
+class ReviewResource(Resource):
+    def get(self):
+        # Retrieve all available reviews
+        reviews = Review.query.all()
+        review_list = [
+            {'id': review.id, 'rating': review.rating, 'comment': review.comment, 'user_id': review.user_id}
+            for review in reviews
+        ]
+        return review_list
+    
 class ReviewById(Resource):
     def get(self, review_id):
         # Retrieve a specific review using its ID
