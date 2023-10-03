@@ -9,3 +9,5 @@ class Location(db.Model):
 
     #one to many relationship with destination
     destinations = db.relationship('Destination', backref='location',lazy = True)
+    def __repr__(self):
+        return f"Location name: {self.name}, Description: {self.description}"
