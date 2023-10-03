@@ -7,6 +7,8 @@ class Destination(db.Model):
     image_url = db.Column(db.String(255))
     location_id = db.Column(db.Integer, db.ForeignKey('location.id'), nullable=False)
     reviews = db.relationship('ReviewDestination',back_populates='destination')
-
+    
+    def __repr__(self):
+        return f" Destination name: {self.name}, Description: {self.description} for Location {self.location_id}"
 
 
