@@ -1,9 +1,11 @@
+import Footer from './components/Footer'
 function App() {
   return (
-    <div className="container">
-      <h1 className="text-center"> Destinations App</h1>
+    <div>
+      {/* Other components and content */}
+      <Footer />
     </div>
   );
 }
 
-export default App;
+export default App
