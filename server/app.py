@@ -179,31 +179,40 @@ class ReviewById(Resource):
 class CreateReviewDestinations(Resource):
     def post(self):
         data = request.get_json()
-        if not "review_id" or not "destination_id" in data:
-            return {"error": "review_id and destination_id are required fields"},401
-        review = db.session.get(Review,data["review_id"])
-        destination =  db.session.get(Destination,data["destination_id"])
-        if not review or not destination:
-            return {"error":"Review or Destination does not exist"},404
+        if not ("review_id" in data and "destination_id" in data):
+            return {"error": "review_id and destination_id are required fields"}, 401
         
-        new_review_destination = ReviewDestination(review=review,destination=destination)
+        review_id = data["review_id"]
+        destination_id = data["destination_id"]
+        
+        # Check if the review already exists for the given destination
+        existing_review_destination = ReviewDestination.query.filter_by(review_id=review_id, destination_id=destination_id).first()
+        if existing_review_destination:
+            return {"error": "Review already exists for this destination"}, 401
+
+        review = db.session.get(Review, review_id)
+        destination = db.session.get(Destination, destination_id)
+
+        if not review or not destination:
+            return {"error": "Review or Destination does not exist"}, 404
+
+        new_review_destination = ReviewDestination(review=review, destination=destination)
         db.session.add(new_review_destination)
         db.session.commit()
-        # return {"message":"Review successfully created"},201
-        destination_data ={
-            "id":destination.id,
-            "name":destination.name,
-            "description":destination.description,
-            "image_url":destination.image_url,
-            "Reviews":[{
-                "id":review.review.id,
-                "rating":review.review.rating,
-                "comment":review.review.comment
-            }
-             for review in destination.reviews
-            ]
-        }          
-        return jsonify(destination_data)
+
+        destination_data = {
+            "id": destination.id,
+            "name": destination.name,
+            "description": destination.description,
+            "image_url": destination.image_url,
+            "Reviews": [{
+                "id": review.review.id,
+                "rating": review.review.rating,
+                "comment": review.review.comment
+            } for review in destination.reviews]
+        }
+        return destination_data, 200
+
 api.add_resource(Login,"/login",endpoint="login")
 api.add_resource(Logout,"/logout",endpoint="logout")
 api.add_resource(Signup,"/signup",endpoint="signup")
