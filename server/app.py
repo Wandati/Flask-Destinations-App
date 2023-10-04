@@ -87,11 +87,12 @@ class ReviewByID(Resource):
     def patch(self, review_id):
         review = Review.query.get(review_id)
         if review:
-            args = self.patch_parser.parse_args()
-            if 'rating' in args:
-                review.rating = args['rating']
-            if 'comment' in args:
-                review.comment = args['comment']
+            data = request.get_json()  
+
+            if 'rating' in data:
+                review.rating = data['rating']
+            if 'comment' in data:
+                review.comment = data['comment']
 
             db.session.commit()
             return jsonify({
