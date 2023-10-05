@@ -115,7 +115,13 @@ class DisplayDestinationsById(Resource):
             'name': destination.name,
             'description': destination.description,
             'image_url': destination.image_url,
-            'location_id': destination.location_id
+            'location_id': destination.location_id,
+            "Reviews": [{
+                "id": review.review.id,
+                "rating": review.review.rating,
+                "comment": review.review.comment
+            } for review in destination.reviews
+            ]
         }
         return destination_data,200
 class ReviewResource(Resource):
@@ -142,7 +148,58 @@ class ReviewResource(Resource):
         except Exception as e:
             return {'error': str(e)}, 400
 
-    
+# class DestinationReviews(Resource):
+#     def post(self,id):
+#         destination = Destination.query.filter_by(id=id).first()
+#         data = request.get_json()
+#         new_review = Review(
+#                 rating=data['rating'],
+#                 comment=data['comment'],
+#                 user_id=session['user_id']
+#         )
+        
+#         # existing_review_destination = ReviewDestination.query.filter_by(review_id=new_review.id, destination_id=destination.id).first()
+#         # if existing_review_destination:
+#         #     return {"error": "Review already exists for this destination"}, 401
+        
+#         db.session.add(new_review)
+#         db.session.commit()
+#         new_review_destination=ReviewDestination(review_id=new_review.id,destination_id=destination.id)
+#         db.session.add(new_review_destination)
+#         db.session.commit()
+#         return {"status":"Ok"},201
+class DestinationReviews(Resource):
+    def post(self, id):
+        destination = Destination.query.filter_by(id=id).first()
+        data = request.get_json()
+        
+        # Check if a review with the same content already exists for the destination
+        existing_review = Review.query.filter_by(
+            rating=data['rating'],
+            comment=data['comment'],
+            user_id=session['user_id']
+        ).first()
+        
+        if existing_review :
+            return {"error": "Duplicate review for this destination"}, 401
+        
+        new_review = Review(
+            rating=data['rating'],
+            comment=data['comment'],
+            user_id=session['user_id']
+        )
+        
+        db.session.add(new_review)
+        db.session.commit()
+        
+        new_review_destination = ReviewDestination(review_id=new_review.id, destination_id=destination.id)
+        db.session.add(new_review_destination)
+        db.session.commit()
+        
+        return {"status": "Ok"}, 201
+        
+        
+        
 class ReviewById(Resource):
     def get(self, id):
         review = Review.query.filter_by(id=id).first()
@@ -175,7 +232,8 @@ class ReviewById(Resource):
             })
         else:
             return {'message': 'Review not found'},404
-        
+
+
 class CreateReviewDestinations(Resource):
     def post(self):
         data = request.get_json()
@@ -209,7 +267,8 @@ class CreateReviewDestinations(Resource):
                 "id": review.review.id,
                 "rating": review.review.rating,
                 "comment": review.review.comment
-            } for review in destination.reviews]
+            } for review in destination.reviews
+            ]
         }
         return destination_data, 200
 
@@ -224,6 +283,7 @@ api.add_resource(DisplayDestinationsById, '/destinations/<int:id>')
 api.add_resource(DisplayLocations,'/',endpoint='/')
 api.add_resource(DisplayLocationsById,'/locations/<int:id>')
 api.add_resource(CreateReviewDestinations,"/reviewdestinations",endpoint="reviewdestinations")
+api.add_resource(DestinationReviews,"/destinationreviews/<int:id>")
 
 if __name__=="__main__":
     app.run(port=5555,debug=True)

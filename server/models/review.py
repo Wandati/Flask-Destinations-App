@@ -7,7 +7,7 @@ class Review(db.Model):
     user_id = db.Column(db.Integer,db.ForeignKey('user.id'))
     
     # destination_id = db.Column(db.Integer,db.ForeignKey('destination.id'))
-    destinations = db.relationship('ReviewDestination',back_populates='review')
+    destinations = db.relationship('ReviewDestination',back_populates='review',cascade='all, delete')
     
     @validates("rating")
     def validates_rating(self,key,rating):
