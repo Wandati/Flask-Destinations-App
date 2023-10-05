@@ -126,99 +126,139 @@ class DisplayDestinationsById(Resource):
         return destination_data,200
 class ReviewResource(Resource):
     def get(self):
-        # Retrieve all available reviews
-        reviews = Review.query.all()
-        review_list = [
-            {'id': review.id, 'rating': review.rating, 'comment': review.comment, 'user_id': review.user_id}
-            for review in reviews
+        reviews = [{
+            "id":review.id,
+            "rating":review.rating,
+            "comment":review.comment,
+            "user_id":review.user_id,
+            "username":review.user.username
+        }
+         for review in Review.query.all()
         ]
-        return review_list
+        
+        return reviews,200
+    # def get(self):
+    #     # Retrieve all available reviews
+    #     reviews = Review.query.all()
+    #     review_list = [
+    #         {'id': review.id, 'rating': review.rating, 'comment': review.comment, 'user_id': review.user_id,'By': review.user}
+    #         for review in reviews
+    #     ]
+    #     return review_list
     
-    def post(self):
-        try:
-            data = request.json  
-            new_review = Review(
-                rating=data['rating'],
-                comment=data['comment'],
-                user_id=session['user_id']
-            )
-            db.session.add(new_review)
-            db.session.commit()
-            return {'message': 'Review successfully added'}, 201
-        except Exception as e:
-            return {'error': str(e)}, 400
+    # def post(self):
+    #     try:
+    #         data = request.json  
+    #         new_review = Review(
+    #             rating=data['rating'],
+    #             comment=data['comment'],
+    #             user_id=session['user_id']
+    #         )
+    #         db.session.add(new_review)
+    #         db.session.commit()
+    #         return {'message': 'Review successfully added'}, 201
+    #     except Exception as e:
+    #         return {'error': str(e)}, 400
 
 # class DestinationReviews(Resource):
-#     def post(self,id):
+#     def post(self, id):
 #         destination = Destination.query.filter_by(id=id).first()
 #         data = request.get_json()
-#         new_review = Review(
-#                 rating=data['rating'],
-#                 comment=data['comment'],
-#                 user_id=session['user_id']
-#         )
         
-#         # existing_review_destination = ReviewDestination.query.filter_by(review_id=new_review.id, destination_id=destination.id).first()
-#         # if existing_review_destination:
-#         #     return {"error": "Review already exists for this destination"}, 401
+#         # Check if a review with the same content already exists for the destination
+#         existing_review = Review.query.filter_by(
+#             rating=data['rating'],
+#             comment=data['comment'],
+#             user_id=session['user_id']
+#         ).first()
+        
+#         if existing_review :
+#             return {"error": "Duplicate review for this destination"}, 401
+        
+#         new_review = Review(
+#             rating=data['rating'],
+#             comment=data['comment'],
+#             user_id=session['user_id']
+#         )
         
 #         db.session.add(new_review)
 #         db.session.commit()
-#         new_review_destination=ReviewDestination(review_id=new_review.id,destination_id=destination.id)
+        
+#         new_review_destination = ReviewDestination(review_id=new_review.id, destination_id=destination.id)
 #         db.session.add(new_review_destination)
 #         db.session.commit()
-#         return {"status":"Ok"},201
+#         return {"status": "Ok"}, 201
+
 class DestinationReviews(Resource):
     def post(self, id):
         destination = Destination.query.filter_by(id=id).first()
         data = request.get_json()
-        
-        # Check if a review with the same content already exists for the destination
-        existing_review = Review.query.filter_by(
-            rating=data['rating'],
-            comment=data['comment'],
-            user_id=session['user_id']
+
+        # Check if a review with the same content already exists for the SAME destination
+        existing_review = Review.query.join(ReviewDestination).filter(
+            ReviewDestination.destination_id == destination.id,
+            Review.rating == data['rating'],
+            Review.comment == data['comment'],
+            Review.user_id == session['user_id']
         ).first()
-        
-        if existing_review :
+
+        if existing_review:
             return {"error": "Duplicate review for this destination"}, 401
-        
+
         new_review = Review(
             rating=data['rating'],
             comment=data['comment'],
             user_id=session['user_id']
         )
-        
+
         db.session.add(new_review)
         db.session.commit()
-        
+
         new_review_destination = ReviewDestination(review_id=new_review.id, destination_id=destination.id)
         db.session.add(new_review_destination)
         db.session.commit()
-        
+
         return {"status": "Ok"}, 201
-        
+
         
         
 class ReviewById(Resource):
     def get(self, id):
-        review = Review.query.filter_by(id=id).first()
-        if review is None:
-            return {'error': 'Review not found'}, 404
-        return {'id': review.id, 'rating': review.rating, 'comment': review.comment, 'user_id': review.user_id}
+        if not "user_id" in session:
+            return {"error":"Unauthorized"},401
+        user = User.query.filter_by(id=session["user_id"]).first()
+        if not user.reviews:
+            return {'error': 'No Reviews currently'}, 404
+        reviews = [
+            {
+                'id': review.id,
+                'rating': review.rating, 
+                'comment': review.comment, 
+            }
+            for review in user.reviews
+        ]
+        return reviews,200
     
     def delete(self, id):
+        if not "user_id" in session:
+            return {"error":"Unauthorized"},401
         review = Review.query.filter_by(id=id).first()
-        if review:
+        if not review:
+            return {"Error":"Review not Found"}
+        user = User.query.filter_by(id=session["user_id"]).first()
+        if review in user.reviews:
             db.session.delete(review)
             db.session.commit()
             return {'message': 'Review deleted successfully'}
         else:
-            return {'message': 'Review not found'}, 404
+            return {'Error': 'Unauthorized or Review not Found'}, 404
 
     def patch(self, id):
         review = Review.query.filter_by(id=id).first()
-        if review:
+        if not review:
+            return {"Error":"Review not Found"}
+        user = User.query.filter_by(id=session["user_id"]).first()
+        if review in user.reviews:
             data = request.get_json()  
             for attr in data:
                 setattr(review,attr,data[attr])
@@ -231,7 +271,7 @@ class ReviewById(Resource):
                 'user_id': review.user_id
             })
         else:
-            return {'message': 'Review not found'},404
+            return {'Error': 'Unauthorized Operation'},401
 
 
 class CreateReviewDestinations(Resource):
