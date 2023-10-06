@@ -7,7 +7,6 @@ from models.user import User
 from flask_restful import Resource
 from flask import jsonify,session,request
 
-
 class Signup(Resource):
     def post(self):
         data = request.get_json()
@@ -32,7 +31,12 @@ class Login(Resource):
         
         if user and user.authenticate(password):
             session["user_id"] = user.id
-            return {},200
+            new_user = {
+                "username":username,
+                "password":password,
+                "user_id":user.id
+            }
+            return new_user,200
         return {"error":"Invalid Username or Password"},401
 
 class CheckSession(Resource):
@@ -251,7 +255,7 @@ class ReviewById(Resource):
             db.session.commit()
             return {'message': 'Review deleted successfully'}
         else:
-            return {'Error': 'Unauthorized or Review not Found'}, 404
+            return {'Error': 'Unauthorized Operation'}, 404
 
     def patch(self, id):
         review = Review.query.filter_by(id=id).first()
@@ -303,7 +307,7 @@ class CreateReviewDestinations(Resource):
             "name": destination.name,
             "description": destination.description,
             "image_url": destination.image_url,
-            "Reviews": [{
+            "reviews": [{
                 "id": review.review.id,
                 "rating": review.review.rating,
                 "comment": review.review.comment
