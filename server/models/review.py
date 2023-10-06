@@ -13,7 +13,7 @@ class Review(db.Model):
     def validates_rating(self,key,rating):
 
         rating = int(rating)
-        if not (1<= rating <=10):
+        if not (1<= rating <=5):
             raise ValueError("Rating should be between 1 and 10.")
         return rating
     def __repr__(self):

@@ -25,7 +25,7 @@ def seed_reviews(num_reviews):
         random_destination = rc(destinations)
         review = Review(
             comment=fake.sentence(),
-            rating=randint(1, 10),
+            rating=randint(1, 5),
             user_id=random_user.id,
         )
         review_destination = ReviewDestination(

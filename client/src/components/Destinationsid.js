@@ -11,9 +11,8 @@ import AddReview from "./AddReview"; // Import the AddReview component
 
 export default function Destinationsid() {
   const [destination, setDestination] = useState(null);
-  const { id } = useParams(); // Access 'id' from the route parameters
+  const { id } = useParams(); 
 
-  // State for managing the modal visibility
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
@@ -28,7 +27,7 @@ export default function Destinationsid() {
   }
 
   const reviews = destination.reviews.map((rev) => {
-    const rating = rev.rating; // Assuming rating is a number from 1 to 5
+    const rating = rev.rating; 
 
     const stars = [];
     for (let i = 1; i <= 5; i++) {
@@ -65,12 +64,10 @@ export default function Destinationsid() {
     );
   });
 
-  // Function to open the modal
   const handleOpenModal = () => {
     setShowModal(true);
   };
 
-  // Function to close the modal
   const handleCloseModal = () => {
     setShowModal(false);
   };

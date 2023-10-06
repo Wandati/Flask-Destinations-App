@@ -4,7 +4,7 @@ import * as yup from "yup";
 import { Link, useNavigate } from "react-router-dom";
 
 function Signup() {
-  const navigate = useNavigate(); // Use useNavigate hook to handle navigation
+  const navigate = useNavigate(); 
   const [signupSuccess, setSignupSuccess] = useState(false);
 
   const formSchema = yup.object().shape({
@@ -33,11 +33,10 @@ function Signup() {
       })
         .then((res) => {
           if (res.status === 201) {
-            setSignupSuccess(true); // Set signupSuccess to true
-            // You can redirect to the sign-in page after a delay if needed
+            setSignupSuccess(true); 
             setTimeout(() => {
-              navigate("/sign-in"); // Navigate to the sign-in page
-            }, 3000); // Wait for 3 seconds before redirecting (adjust as needed)
+              navigate("/sign-in"); 
+            }, 3000); 
           }
         })
         .catch((error) => {

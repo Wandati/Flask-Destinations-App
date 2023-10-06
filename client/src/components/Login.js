@@ -5,13 +5,13 @@ import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { Link, useNavigate } from "react-router-dom";
-import { useUser } from "./UserContext"; // Import the useUser hook
+import { useUser } from "./UserContext";
 
 function Login() {
   const navigate = useNavigate();
   const [loginError, setLoginError] = useState(false);
 
-  const { setUser } = useUser(); // Get the setUser function from UserContext
+  const { setUser } = useUser(); 
 
   const formSchema = yup.object().shape({
     username: yup.string().required("Must enter a username"),
@@ -45,11 +45,9 @@ function Login() {
           }
         })
         .then((userData) => {
-          // Ensure that the user data includes 'user_id'
           if (userData && userData.user_id) {
             setUser(userData);
             localStorage.setItem("id", userData.user_id);
-            // Update the user state in UserContext
             navigate("/");
           } else {
             console.error("User data is missing 'user_id'");
