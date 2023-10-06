@@ -3,7 +3,7 @@ import { Button, Modal, Form } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 
 
-export default function AddReview({ destinationId, onAddReview }) {
+export default function AddReview() {
   const { id } = useParams(); // Access 'id' from the route parameters
 
   const [show, setShow] = useState(false);
@@ -59,15 +59,18 @@ export default function AddReview({ destinationId, onAddReview }) {
       if (response.status === 201) {
         // Review added successfully
         const newReview = await response.json();
-        // Call the callback function to update the reviews in the parent component
+        
         // onAddReview(newReview);
         // Reset the state values
         setComment("");
         setRating(0);
-        handleClose(); // Close the modal here
+        handleClose(); 
       } else {
-        // Handle error cases here (e.g., display an error message)
+        
+
+        handleClose(); 
         alert("Must sign in to add a review");
+        
       }
     } catch (error) {
       console.error("Error:", error);

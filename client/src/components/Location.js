@@ -1,57 +1,10 @@
-// import { Link } from "react-router-dom";
-
-
-// import { useEffect, useState } from "react";
-
-// export default function Locations() {
-//   const [location, setLocations] = useState([]);
-
-//   useEffect(() => {
-//     fetch("http://127.0.0.1:5555/locations/${id}")
-//       .then((res) => res.json())
-//       .then((data) => setLocations(data));
-//   }, []);
-
-
-//   const destinations = location.destinations.map((loc) => {
-//     return (
-//       <div key={location.id} className="col-12">
-//         <div className="card ">
-//           <img
-//             src={destinations.image_url}
-//             className="card-img-top img-fluid"
-//             alt={destinations.name}
-//           />
-//         </div>
-//         <div className="card-body">
-//           <h5 className="card-title">{destinations.name}</h5>
-//           <p className="card-text">{destinations.description} </p>
-//           <button className="btn btn-dark">
-//             <Link to="/destinations/${destinations.id}">Click to view reviews</Link>
-//           </button>
-//         </div>
-//       </div>
-//     );
-//   });
-
-
-
-//   return (
-//     <>
-//       <h1 className="text-center ">{location.name}</h1>
-//       <div className="container">
-//         <div className="row mt-3">{destinations}</div>
-//       </div>
-//     </>
-//   );
-// }
 
 
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 export default function Locations() {
-  const { id } = useParams(); // Access 'id' from the route parameters
+  const { id } = useParams(); 
   const [location, setLocation] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);

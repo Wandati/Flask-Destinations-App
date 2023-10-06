@@ -2,9 +2,9 @@ import React from "react";
 
 function Footer() {
   const containerStyle = {
-    backgroundColor: "black", // Set the background color to black
-    color: "white", // Set text color to white
-    marginTop: "200px", // Add a top margin of 100px
+    backgroundColor: "black", 
+    color: "white", 
+    marginTop: "200px", 
   };
 
   const textCenterStyle = {

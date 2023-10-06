@@ -3,14 +3,13 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { Link } from "react-router-dom";
-import { useUser } from "./UserContext"; // Import the useUser hook
+import { useUser } from "./UserContext"; 
 
 
 
 function CollapsibleExample() {
 
-  const { setUser } = useUser(); // Get the setUser function from UserContext
-  
+  const { setUser } = useUser(); 
 
   function handleLogoutClick(e) {
     e.preventDefault();
