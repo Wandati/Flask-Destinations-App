@@ -7,7 +7,6 @@ from models.user import User
 from flask_restful import Resource
 from flask import jsonify,session,request
 
-
 class Signup(Resource):
     def post(self):
         data = request.get_json()
@@ -32,7 +31,12 @@ class Login(Resource):
         
         if user and user.authenticate(password):
             session["user_id"] = user.id
-            return {},200
+            new_user = {
+                "username":username,
+                "password":password,
+                "user_id":user.id
+            }
+            return new_user,200
         return {"error":"Invalid Username or Password"},401
 
 class CheckSession(Resource):
@@ -49,6 +53,16 @@ class Logout(Resource):
             session["user_id"] = None
             return {},204
         return {"error":"Unauthorized action"},401
+    
+class CheckUser (Resource):
+    def get(self, id):
+        user = User.query.filter_by(id=id).first()
+        new_user = {
+            "id":user.id,
+            "username":user.username
+        } 
+
+        return new_user, 200
     
 class DisplayLocations(Resource):
     def get(self):
@@ -105,83 +119,122 @@ class DisplayDestinations(Resource):
         for destination in Destination.query.all()
         ]
         return destinations,200
-    
-    def post(self):
-        try:
-            data = request.json  
-            new_destination = Destination(
-                name=data['name'],
-                description=data['description'],
-                image_url=data['image_url'],
-                location_id=data['location_id']
-            )
-            db.session.add(new_destination)
-            db.session.commit()
-            return {'message': 'Destination successfully added'}, 201
-        except Exception as e:
-            return {'error': str(e)}, 400
-    
-
 class DisplayDestinationsById(Resource):
     def get(self,id):
         destination = Destination.query.filter_by(id=id).first()
         if not destination:
             return {"Message": "Destination not Found"},401
         destination_data = {
-            "id": destination.id,
-            "name": destination.name,
-            "description": destination.description,
-            "image_url": destination.image_url,
+            'id': destination.id,
+            'name': destination.name,
+            'description': destination.description,
+            'image_url': destination.image_url,
+            'location_id': destination.location_id,
             "reviews": [{
                 "id": review.review.id,
+                "username":review.review.user.username,
                 "rating": review.review.rating,
                 "comment": review.review.comment
-            } for review in destination.reviews]
+            } for review in destination.reviews
+            ]
         }
-        return destination_data, 200
+        return destination_data,200
 class ReviewResource(Resource):
     def get(self):
-        # Retrieve all available reviews
-        reviews = Review.query.all()
-        review_list = [
-            {'id': review.id, 'rating': review.rating, 'comment': review.comment, 'user_id': review.user_id}
-            for review in reviews
+        reviews = [{
+            "id":review.id,
+            "rating":review.rating,
+            "comment":review.comment,
+            "user_id":review.user_id,
+            "username":review.user.username
+        }
+         for review in Review.query.all()
         ]
-        return review_list
-    
-    def post(self):
-        try:
-            data = request.json  
-            new_review = Review(
-                rating=data['rating'],
-                comment=data['comment'],
-                user_id=session['user_id']
-            )
-            db.session.add(new_review)
-            db.session.commit()
-            return {'message': 'Review successfully added'}, 201
-        except Exception as e:
-            return {'error': str(e)}, 400
+        
+        return reviews,200
+   
+class DestinationReviews(Resource):
+    def post(self, id):
+        destination = Destination.query.filter_by(id=id).first()
+        data = request.get_json()
 
-    
+        # Check if a review with the same content already exists for the SAME destination
+        # existing_review = Review.query.join(ReviewDestination).filter(
+        #     ReviewDestination.destination_id == destination.id,
+        #     Review.rating == data['rating'],
+        #     Review.comment == data['comment'],
+        #     Review.user_id == session['user_id']
+        # ).first()
+
+        # if existing_review:
+        #     return {"error": "Duplicate review for this destination"}, 401
+
+        new_review = Review(
+            rating=data['rating'],
+            comment=data['comment'],
+            # user_id=session['user_id']
+            user_id=data['user_id']
+            # user.username = new_review.user.username
+        )
+
+        db.session.add(new_review)
+        db.session.commit()
+
+        new_review_destination = ReviewDestination(review_id=new_review.id, destination_id=destination.id)
+        db.session.add(new_review_destination)
+        db.session.commit()
+
+        response = jsonify({"status": "Ok"})
+    # Set CORS headers in the response
+        response.headers.add("Access-Control-Allow-Origin", "http://localhost:3000")  # Replace "*" with your frontend's origin
+
+
+        return {"status": "Ok"}, 201
+
+        
+        
 class ReviewById(Resource):
     def get(self, id):
-        review = Review.query.filter_by(id=id).first()
-        if review is None:
-            return {'error': 'Review not found'}, 404
-        return {'id': review.id, 'rating': review.rating, 'comment': review.comment, 'user_id': review.user_id}
+        # if not "user_id" in session:
+        #     return {"error":"Unauthorized"},401
+        # user = User.query.filter_by(id=session["user_id"]).first()
+        user = User.query.filter_by(id=id).first()
+        if not user.id:
+            return {"error":"Unauthorized"},401
+
+        if not user.reviews:
+            return {'error': 'No Reviews currently'}, 404
+        reviews = [
+            {
+                'id': review.id,
+                "username":review.user.username,
+                'rating': review.rating, 
+                'comment': review.comment, 
+            }
+            for review in user.reviews
+        ]
+        return reviews,200
     
     def delete(self, id):
+        # if not "user_id" in session:
+        #     return {"error":"Unauthorized"},401
         review = Review.query.filter_by(id=id).first()
-        if review:
-            db.session.delete(review)
-            db.session.commit()
-            return {'message': 'Review deleted successfully'}
-        else:
-            return {'message': 'Review not found'}, 404
+        if not review:
+            return {"Error":"Review not Found"}
+        # user = User.query.filter_by(id=session["user_id"]).first()
+        # if review in user.reviews:
+        db.session.delete(review)
+        db.session.commit()
+        return {'message': 'Review deleted successfully'}
+        # else:
+        # return {'Error': 'Unauthorized or Review not Found'}, 404
 
     def patch(self, id):
         review = Review.query.filter_by(id=id).first()
+        if not review:
+            return {"Error":"Review not Found"}
+        # user = User.query.filter_by(id=session["user_id"]).first()
+        # if review in user.reviews:
         if review:
             data = request.get_json()  
             for attr in data:
@@ -195,8 +248,9 @@ class ReviewById(Resource):
                 'user_id': review.user_id
             })
         else:
-            return {'message': 'Review not found'},404
-        
+            return {'Error': 'Unauthorized Operation'},401
+
+
 class CreateReviewDestinations(Resource):
     def post(self):
         data = request.get_json()
@@ -230,40 +284,21 @@ class CreateReviewDestinations(Resource):
                 "id": review.review.id,
                 "rating": review.review.rating,
                 "comment": review.review.comment
-            } for review in destination.reviews]
+            } for review in destination.reviews
+            ]
         }
         return destination_data, 200
-    
-
-class DestinationReviews(Resource):
-    def post(self,id):
-        destination = Destination.query.filter_by(id=id).first()
-        data = request.get_json()
-        new_review = Review(
-                rating=data['rating'],
-                comment=data['comment'],
-                user_id=session['user_id']
-        )
-        existing_review_destination = ReviewDestination.query.filter_by(review_id=new_review.id, destination_id=destination.id).first()
-        if existing_review_destination:
-            return {"error": "Review already exists for this destination"}, 401
-        
-        db.session.add(new_review)
-        db.session.commit()
-        new_review_destination=ReviewDestination(review_id=new_review.id,destination_id=destination.id)
-        db.session.add(new_review_destination)
-        db.session.commit()
-        return {"status":"Ok"},201
 
 api.add_resource(Login,"/login",endpoint="login")
 api.add_resource(Logout,"/logout",endpoint="logout")
 api.add_resource(Signup,"/signup",endpoint="signup")
+api.add_resource(CheckUser,"/checkuser/<int:id>")
 api.add_resource(CheckSession,"/checksession",endpoint="checksession")
 api.add_resource(ReviewResource, '/reviews')
 api.add_resource(ReviewById, '/reviews/<int:id>')
 api.add_resource(DisplayDestinations, '/destinations',endpoint="destinations")
 api.add_resource(DisplayDestinationsById, '/destinations/<int:id>')
-api.add_resource(DisplayLocations,'/locations',endpoint='/locations')
+api.add_resource(DisplayLocations,'/',endpoint='/')
 api.add_resource(DisplayLocationsById,'/locations/<int:id>')
 api.add_resource(CreateReviewDestinations,"/reviewdestinations",endpoint="reviewdestinations")
 api.add_resource(DestinationReviews,"/destinationreviews/<int:id>")

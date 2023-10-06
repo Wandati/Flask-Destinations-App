@@ -3,9 +3,24 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { Link } from "react-router-dom";
+import { useUser } from "./UserContext"; // Import the useUser hook
+
 
 
 function CollapsibleExample() {
+
+  const { setUser } = useUser(); // Get the setUser function from UserContext
+  
+
+  function handleLogoutClick(e) {
+    e.preventDefault();
+    setUser({});
+    localStorage.removeItem("id");
+    window.location = "/";
+  }
+
+let id = localStorage.getItem("id")
+
   return (
     <Navbar collapseOnSelect expand="lg" className="bg-body-tertiary">
       <Container>
@@ -24,7 +39,7 @@ function CollapsibleExample() {
             <Link to="/reviews" class="list">Reviews
           </Link>
             </Nav.Link>
-            <NavDropdown title="Dropdown" id="collapsible-nav-dropdown">
+            {/* <NavDropdown title="Dropdown" id="collapsible-nav-dropdown">
               <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
               <NavDropdown.Item href="#action/3.2">
                 Another action
@@ -34,15 +49,21 @@ function CollapsibleExample() {
               <NavDropdown.Item href="#action/3.4">
                 Separated link
               </NavDropdown.Item>
-            </NavDropdown>
+            </NavDropdown> */}
           </Nav>
           <Nav>
             <Nav.Link href="#deets">
-            <Link to="/sign-up" class="list"> SignUp/SignIn
+            <Link to="/sign-up" class="list">
+            
+               SignUp
           </Link>
             </Nav.Link>
             <Nav.Link eventKey={2} href="#memes">
-            <Link to="/logout" class="list"> Logout
+            <Link to="/logout" class="list">
+            {id != null && (
+         <button onClick={(e) => handleLogoutClick(e)}>Logout</button>
+
+        )}
           </Link>
             </Nav.Link>
           </Nav>

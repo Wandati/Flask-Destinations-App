@@ -7,7 +7,7 @@ export default function Home() {
   const [locations, setLocations] = useState([]);
 
   useEffect(() => {
-    fetch("http://127.0.0.1:5555/locations")
+    fetch("http://127.0.0.1:5555")
       .then((res) => res.json())
       .then((data) => setLocations(data));
   }, []);

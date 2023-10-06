@@ -53,7 +53,7 @@ export default function Destinationsid() {
 
     return (
       <div key={rev.id} className="col-md-4 mb-5 mb-md-0">
-        <h5 className="mb-3">{rev.user_id}</h5>
+            <h5 className="mb-3">{rev.username}</h5>
         <p className="px-xl-3">
           <FontAwesomeIcon icon={faQuoteLeft} className="pe-2" />
           {rev.comment}

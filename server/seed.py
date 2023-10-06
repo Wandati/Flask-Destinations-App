@@ -9,7 +9,12 @@ from faker import Faker
 from random import randint, choice as rc
 
 # Create a function to seed reviews
+
 def seed_reviews(num_reviews):
+    Review.query.delete()
+    ReviewDestination.query.delete()
+    db.session.commit()
+
     fake = Faker()
     users = User.query.all()  # Get all existing users
     destinations = Destination.query.all()  # Get all existing destinations

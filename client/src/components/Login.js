@@ -1,11 +1,17 @@
+
+
+
 import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { Link, useNavigate } from "react-router-dom"; // Import useNavigate instead of useHistory
+import { Link, useNavigate } from "react-router-dom";
+import { useUser } from "./UserContext"; // Import the useUser hook
 
 function Login() {
-  const navigate = useNavigate(); // Use useNavigate hook to handle navigation
+  const navigate = useNavigate();
   const [loginError, setLoginError] = useState(false);
+
+  const { setUser } = useUser(); // Get the setUser function from UserContext
 
   const formSchema = yup.object().shape({
     username: yup.string().required("Must enter a username"),
@@ -31,9 +37,22 @@ function Login() {
       })
         .then((res) => {
           if (res.status === 200) {
-            navigate("/"); // Use navigate to go to the home page
+
+            return res.json();
           } else {
             setLoginError(true);
+            throw new Error("Login failed");
+          }
+        })
+        .then((userData) => {
+          // Ensure that the user data includes 'user_id'
+          if (userData && userData.user_id) {
+            setUser(userData);
+            localStorage.setItem("id", userData.user_id);
+            // Update the user state in UserContext
+            navigate("/");
+          } else {
+            console.error("User data is missing 'user_id'");
           }
         })
         .catch((error) => {
@@ -89,3 +108,4 @@ function Login() {
 }
 
 export default Login;
+

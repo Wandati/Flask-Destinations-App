@@ -1,8 +1,12 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "./UserContext"; // Import the useUser hook
+
 
 function Logout() {
   const navigate = useNavigate();
+  const { setUser } = useUser(); // Get the setUser function from UserContext
+
 
   useEffect(() => {
     // Send a request to log the user out on the server-side
@@ -32,9 +36,20 @@ function Logout() {
       });
   }, [navigate]);
 
+  function handleLogoutClick(e) {
+    e.preventDefault();
+    setUser({});
+    localStorage.removeItem("id");
+    window.location = "/";
+  }
+let id = localStorage.getItem("id")
+console.log(id)
   return (
     <div>
-      Logging out...
+      {id != null && (
+        <button onClick={(e) => handleLogoutClick(e)}>Logout</button>
+
+      )}
     </div>
   );
 }
