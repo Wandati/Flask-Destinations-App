@@ -5,7 +5,7 @@ from config import bcrypt
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(50))
+    username = db.Column(db.String(50),unique=True)
     email = db.Column(db.String(50))
     _password_hash = db.Column(db.String(50))
     reviews = db.relationship('Review',backref='user')
