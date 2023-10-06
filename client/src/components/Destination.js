@@ -27,8 +27,8 @@ export default function Destinations() {
         <div className="card-body">
           <h5 className="card-title">{dest.name}</h5>
           <p className="card-text">{dest.description} </p>
-          <button className="btn btn-dark">
-            <Link to={`/destinations/${dest.id}`}>Click to view the Destination details</Link>
+          <button className="btn btn-dark text-white text-decoration-none">
+            <Link className="text-decoration-none" to={`/destinations/${dest.id}`}>Click to view the Destination details</Link>
           </button>
         </div>
       </div>
