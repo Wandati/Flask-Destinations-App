@@ -133,10 +133,31 @@ function Review() {
       });
   };
 
+  // useEffect(() => {
+  //   if (user) {
+  //     fetch(`http://127.0.0.1:5555/reviews/${user}`)
+  //       .then((res) => res.json())
+  //       .then((data) => {
+  //         console.log(data); // Log the fetched data to the console
+  //         setReviews(data);
+  //       })
+  //       .catch((error) => {
+  //         console.error("Error fetching reviews:", error);
+  //       });
+  //   }
+  // }, [user]);
+
   useEffect(() => {
     if (user) {
       fetch(`http://127.0.0.1:5555/reviews/${user}`)
-        .then((res) => res.json())
+        .then((res) => {
+          if (res.status === 404) {
+            // No reviews found, show an alert to the user
+            alert("No reviews available.");
+            return [];
+          }
+          return res.json();
+        })
         .then((data) => {
           console.log(data); // Log the fetched data to the console
           setReviews(data);

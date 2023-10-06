@@ -155,8 +155,12 @@ class ReviewResource(Resource):
    
 class DestinationReviews(Resource):
     def post(self, id):
-        destination = Destination.query.filter_by(id=id).first()
         data = request.get_json()
+        
+        user= data['user_id']
+        if not user:
+            return {"error": "log in to Add Review" }, 401
+        destination = Destination.query.filter_by(id=id).first()
 
         # Check if a review with the same content already exists for the SAME destination
         # existing_review = Review.query.join(ReviewDestination).filter(

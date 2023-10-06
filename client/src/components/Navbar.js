@@ -51,14 +51,21 @@ let id = localStorage.getItem("id")
               </NavDropdown.Item>
             </NavDropdown> */}
           </Nav>
+          
           <Nav>
-            <Nav.Link href="#deets">
+          <Nav.Link>
             <Link to="/sign-up" class="list">
             
                SignUp
           </Link>
             </Nav.Link>
-            <Nav.Link eventKey={2} href="#memes">
+            <Nav.Link>
+            <Link to="/sign-in" class="list">
+            
+               Login
+          </Link>
+            </Nav.Link>
+            <Nav.Link eventKey={2} >
             <Link to="/logout" class="list">
             {id != null && (
          <button onClick={(e) => handleLogoutClick(e)}>Logout</button>
