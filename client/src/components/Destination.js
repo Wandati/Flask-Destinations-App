@@ -16,33 +16,33 @@ export default function Destinations() {
 
   const destination = destinations.map((dest) => {
     return (
-      <div key={dest.id} className="col-6">
-        <div className="card ">
+         <div key={dest.id} className="max-w-4xl rounded overflow-hidden shadow-lg mt-6 ">        
           <img
             src={dest.image_url}
-            className="card-img-top img-fluid"
+            className="card-img-top img-fluid w-full h-4/5	"
             alt={dest.name}
           />
+        
+        <div class="font-bold text-xl mb-2 ml-6 mt-8"> {dest.name}
+         </div>
+         <div class="px-6 py-4">
+          <p class="text-gray-700 text-base">{dest.description}</p>
+          </div>
+          <div className="flex justify-center mb-2" >
+          <span class="inline-block bg-[#007423] rounded-full px-3 py-1 text-sm text-white font-semibold text-[#1a3813]mr-2 mb-2 hover:bg-[#068f2f] "><Link  to={`/destinations/${dest.id}`}>Click to view the Destination Details</Link> </span>
         </div>
-        <div className="card-body">
-          <h5 className="card-title">{dest.name}</h5>
-          <p className="card-text">{dest.description} </p>
-          <button className="btn btn-dark">
-            <Link to={`/destinations/${dest.id}`}>Click to view the Destination details</Link>
-          </button>
         </div>
-      </div>
+      
     );
   });
 
 
   
   return (
-    <>
-      <h1 className="text-center ">Our Destinations</h1>
-      <div className="container">
-        <div className="row mt-3">{destination}</div>
-      </div>
-    </>
+    <section className=" min-h-[1200px] flex flex-col items-center justify-center w-full flex-wrap grid-cols-2">
+      <h1 className="text-center font-bold text-4xl mt-5">Our Destinations</h1>
+        <div className="row mt-6">{destination}</div>
+      
+    </section>
   );
 }

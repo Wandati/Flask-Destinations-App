@@ -29,15 +29,18 @@ class Login(Resource):
         password = data["password"]
         user=User.query.filter_by(username=username).first()
         
-        if user and user.authenticate(password):
-            session["user_id"] = user.id
-            new_user = {
+        if not user:
+            return {"error":"Invalid Username"},401
+        elif not user.authenticate(password):
+            return {"error":"Invalid Password"},401
+        
+        session["user_id"] = user.id
+        new_user = {
                 "username":username,
                 "password":password,
                 "user_id":user.id
             }
-            return new_user,200
-        return {"error":"Invalid Username or Password"},401
+        return new_user,200
 
 class CheckSession(Resource):
     def get(self):
@@ -302,7 +305,7 @@ api.add_resource(ReviewResource, '/reviews')
 api.add_resource(ReviewById, '/reviews/<int:id>')
 api.add_resource(DisplayDestinations, '/destinations',endpoint="destinations")
 api.add_resource(DisplayDestinationsById, '/destinations/<int:id>')
-api.add_resource(DisplayLocations,'/',endpoint='/')
+api.add_resource(DisplayLocations,'/locations',endpoint='/locations')
 api.add_resource(DisplayLocationsById,'/locations/<int:id>')
 api.add_resource(CreateReviewDestinations,"/reviewdestinations",endpoint="reviewdestinations")
 api.add_resource(DestinationReviews,"/destinationreviews/<int:id>")

@@ -6,10 +6,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
 import { faStar as regularStar } from '@fortawesome/free-regular-svg-icons';
 import { faQuoteLeft } from "@fortawesome/free-solid-svg-icons";
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 
 function Review() {
-  const { id } = useParams(); 
+  // const { id } = useParams(); 
   const [reviews, setReviews] = useState([]);
   const user = localStorage.getItem("id");
 
@@ -91,11 +91,11 @@ function Review() {
   }, [user]);
 
   return (
-    <section>
-      <div className="row mt-3">
+    <section className=" min-h-[1200px] flex flex-col items-center w-full mx-10">
+      <div className="flex flex-wrap gap-8">
         {reviews.map((rev) => (
-          <div key={rev.id} className="col-md-4 mb-5 mb-md-0">
-            <h5 className="mb-3">{rev.username}</h5>
+          <div key={rev.id} className="">
+            <h2 className="font-bold text-2xl text-[#193d11] my-6 text-center">{rev.username}</h2>
             <p className="px-xl-3">
               <FontAwesomeIcon icon={faQuoteLeft} className="pe-2" />
               {rev.comment}
@@ -112,7 +112,7 @@ function Review() {
               ))}
             </ul>
             <div>
-              <button
+              <button className='bg-[#007423] hover:bg-[#0dcc46] text-white px-4 py-3 rounded-lg transition'
                 onClick={() => {
                   const updatedComment = prompt("Enter the updated comment:");
                   if (updatedComment !== null) {
@@ -122,7 +122,7 @@ function Review() {
               >
                 Update Comment
               </button>
-              <button
+              <button className='bg-[#007423] hover:bg-[#0dcc46] text-white px-4 py-3 rounded-lg transition ml-2'
                 onClick={() => {
                   if (window.confirm("Are you sure you want to delete this comment?")) {
                     deleteComment(rev.id);
