@@ -2,52 +2,18 @@ import React, { useState } from "react";
 import { Button, Modal, Form } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 
-
 export default function AddReview() {
-  const { id } = useParams(); // Access 'id' from the route parameters
-
+  const { id } = useParams();
   const [show, setShow] = useState(false);
   const [comment, setComment] = useState("");
   const [rating, setRating] = useState(0);
+  const user = localStorage.getItem("id");
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  const user = localStorage.getItem("id");
-
-  // const handleSubmit = async () => {
-  //   try {
-  //     // Perform your API call to add a review here
-  //     const response = await fetch(`http://127.0.0.1:5555/destinationreviews/${id}`, {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({ comment, rating,
-  //        user_id:user
-  //       }),
-  //     });
-
-  //     if (response.status === 201) {
-  //       // Review added successfully
-  //       const newReview = await response.json();
-  //       // Call the callback function to update the reviews in the parent component
-  //       onAddReview(newReview);
-  //       // Reset the state values
-  //       setComment("");
-  //       setRating(0);
-  //       handleClose();
-  //     } else {
-  //       // Handle error cases here (e.g., display an error message)
-  //       alert("must SignIn to add a review");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error:", error);
-  //   }
-  // };
 
   const handleSubmit = async () => {
     try {
-      // Perform your API call to add a review here
       const response = await fetch(`http://127.0.0.1:5555/destinationreviews/${id}`, {
         method: "POST",
         headers: {
@@ -55,28 +21,20 @@ export default function AddReview() {
         },
         body: JSON.stringify({ comment, rating, user_id: user }),
       });
-  
+
       if (response.status === 201) {
-        // Review added successfully
         const newReview = await response.json();
-        
-        // onAddReview(newReview);
-        // Reset the state values
         setComment("");
         setRating(0);
-        handleClose(); 
+        handleClose();
       } else {
-        
-
-        handleClose(); 
+        handleClose();
         alert("Must sign in to add a review");
-        
       }
     } catch (error) {
       console.error("Error:", error);
     }
   };
-  
 
   return (
     <>
@@ -97,6 +55,7 @@ export default function AddReview() {
                 placeholder="Enter your review"
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
+                className="mb-3" // Add Bootstrap class for margin
               />
             </Form.Group>
 
@@ -107,6 +66,7 @@ export default function AddReview() {
                 placeholder="Enter your rating (1-5)"
                 value={rating}
                 onChange={(e) => setRating(e.target.value)}
+                className="mb-3" // Add Bootstrap class for margin
               />
             </Form.Group>
           </Form>
@@ -115,7 +75,7 @@ export default function AddReview() {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleSubmit} >
+          <Button variant="primary" onClick={handleSubmit}>
             Save Review
           </Button>
         </Modal.Footer>
@@ -123,5 +83,6 @@ export default function AddReview() {
     </>
   );
 }
+
 
 

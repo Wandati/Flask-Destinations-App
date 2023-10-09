@@ -139,4 +139,8 @@ function Review() {
   );
 }
 
+<div className="col-md-4 mb-5 mb-md-0">
+  {/* Review content */}
+</div>
+
 export default Review;

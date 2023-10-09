@@ -35,6 +35,11 @@ export default function Destinations() {
     );
   });
 
+<div className="container mt-4">
+  <h5 className="card-title">{destination.name}</h5>
+  <div className="row mt-3">{/* Render your reviews here */}</div>
+</div>
+
 
   
   return (

@@ -38,11 +38,13 @@ export default function Home() {
 
 
   return (
+
     <>
-      <h1 className="text-center ">Our Locations</h1>
-      <div className="container">
-        <div className="row mt-3">{location}</div>
-      </div>
+    <div className="container mt-4">
+    <h1 className="text-center">Our Locations</h1>
+    <div className="row mt-3">{/* Render your location cards here */}</div>
+  </div>
+  
     </>
   );
 }

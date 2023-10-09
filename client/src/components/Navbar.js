@@ -1,76 +1,59 @@
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
-import { Link } from "react-router-dom";
-import { useUser } from "./UserContext"; 
+import React from 'react';
+import { Container, Nav, Navbar, NavDropdown } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import { useUser } from './UserContext';
 
-
-
-function CollapsibleExample() {
-
-  const { setUser } = useUser(); 
+function AppNavbar() {
+  const { setUser } = useUser();
+  const id = localStorage.getItem('id');
 
   function handleLogoutClick(e) {
     e.preventDefault();
     setUser({});
-    localStorage.removeItem("id");
-    window.location = "/";
+    localStorage.removeItem('id');
+    window.location = '/';
   }
 
-let id = localStorage.getItem("id")
-
   return (
-    <Navbar collapseOnSelect expand="lg" className="bg-body-tertiary">
+    <Navbar collapseOnSelect expand="lg" bg="primary" variant="dark">
       <Container>
-        <Navbar.Brand >
-          <Link to="/" class="list">Destination App
+        <Navbar.Brand>
+          <Link to="/" className="text-white text-decoration-none">
+            Destination App
           </Link>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link href="#features">
-            <Link to="/destinations" class="list">Destinations
-          </Link>
-            </Nav.Link>
-            <Nav.Link href="#pricing">
-            <Link to="/reviews" class="list">Reviews
-          </Link>
-            </Nav.Link>
-            {/* <NavDropdown title="Dropdown" id="collapsible-nav-dropdown">
-              <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.2">
-                Another action
-              </NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/3.4">
-                Separated link
-              </NavDropdown.Item>
-            </NavDropdown> */}
-          </Nav>
-          
-          <Nav>
-          <Nav.Link>
-            <Link to="/sign-up" class="list">
-            
-               SignUp
-          </Link>
+            <Nav.Link>
+              <Link to="/destinations" className="text-white text-decoration-none">
+                Destinations
+              </Link>
             </Nav.Link>
             <Nav.Link>
-            <Link to="/sign-in" class="list">
-            
-               Login
-          </Link>
+              <Link to="/reviews" className="text-white text-decoration-none">
+                Reviews
+              </Link>
             </Nav.Link>
-            <Nav.Link eventKey={2} >
-            <Link to="/logout" class="list">
-            {id != null && (
-         <button onClick={(e) => handleLogoutClick(e)}>Logout</button>
+          </Nav>
 
-        )}
-          </Link>
+          <Nav>
+            <Nav.Link>
+              <Link to="/sign-up" className="text-white text-decoration-none">
+                SignUp
+              </Link>
+            </Nav.Link>
+            <Nav.Link>
+              <Link to="/sign-in" className="text-white text-decoration-none">
+                Login
+              </Link>
+            </Nav.Link>
+            <Nav.Link>
+              {id != null && (
+                <button onClick={(e) => handleLogoutClick(e)} className="btn btn-link text-white">
+                  Logout
+                </button>
+              )}
             </Nav.Link>
           </Nav>
         </Navbar.Collapse>
@@ -79,4 +62,4 @@ let id = localStorage.getItem("id")
   );
 }
 
-export default CollapsibleExample;
+export default AppNavbar;

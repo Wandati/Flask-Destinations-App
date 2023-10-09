@@ -18,7 +18,7 @@ function Footer() {
   // };
 
   return (
-    <footer className="text-center text-white" style={containerStyle}>
+    <footer className="text-center text-white bg-dark py-4" style={containerStyle}>
       <div className="container p-4">
         <section>
           <div className="row">

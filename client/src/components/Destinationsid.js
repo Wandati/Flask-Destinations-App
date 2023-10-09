@@ -7,12 +7,11 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { faStar as regularStar } from "@fortawesome/free-regular-svg-icons";
 import { faQuoteLeft } from "@fortawesome/free-solid-svg-icons";
-import AddReview from "./AddReview"; // Import the AddReview component
+import AddReview from "./AddReview";
 
 export default function Destinationsid() {
   const [destination, setDestination] = useState(null);
-  const { id } = useParams(); 
-
+  const { id } = useParams();
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
@@ -27,7 +26,7 @@ export default function Destinationsid() {
   }
 
   const reviews = destination.reviews.map((rev) => {
-    const rating = rev.rating; 
+    const rating = rev.rating;
 
     const stars = [];
     for (let i = 1; i <= 5; i++) {
@@ -52,7 +51,7 @@ export default function Destinationsid() {
 
     return (
       <div key={rev.id} className="col-md-4 mb-5 mb-md-0">
-            <h5 className="mb-3">{rev.username}</h5>
+        <h5 className="mb-3">{rev.username}</h5>
         <p className="px-xl-3">
           <FontAwesomeIcon icon={faQuoteLeft} className="pe-2" />
           {rev.comment}
@@ -88,9 +87,12 @@ export default function Destinationsid() {
                 <p className="card-text">{destination.description}</p>
                 <h5 className="card-title">Reviews</h5>
                 <div>{reviews}</div>
-                {/* <button className="btn btn-dark" onClick={handleOpenModal}>
+                <button
+                  className="btn btn-dark"
+                  onClick={handleOpenModal}
+                >
                   Add a Review
-                </button> */}
+                </button>
               </div>
             </div>
           </div>

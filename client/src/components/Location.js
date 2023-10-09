@@ -57,10 +57,10 @@ export default function Locations() {
 
   return (
     <>
-      <h1 className="text-center">{location.name}</h1>
-      <div className="container">
-        <div className="row mt-3">{destinations}</div>
-      </div>
+    <div className="container mt-4">
+  <h1 className="text-center">{location.name}</h1>
+  <div className="row mt-3">{/* Render your destination cards here */}</div>
+</div>
     </>
   );
 }
