@@ -6,10 +6,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
 import { faStar as regularStar } from '@fortawesome/free-regular-svg-icons';
 import { faQuoteLeft } from "@fortawesome/free-solid-svg-icons";
-// import { useParams } from "react-router-dom";
 
 function Review() {
-  // const { id } = useParams(); 
   const [reviews, setReviews] = useState([]);
   const user = localStorage.getItem("id");
 
@@ -56,19 +54,7 @@ function Review() {
       });
   };
 
-  // useEffect(() => {
-  //   if (user) {
-  //     fetch(`http://127.0.0.1:5555/reviews/${user}`)
-  //       .then((res) => res.json())
-  //       .then((data) => {
-  //         console.log(data); // Log the fetched data to the console
-  //         setReviews(data);
-  //       })
-  //       .catch((error) => {
-  //         console.error("Error fetching reviews:", error);
-  //       });
-  //   }
-  // }, [user]);
+  
 
   useEffect(() => {
     if (user) {

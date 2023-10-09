@@ -66,9 +66,8 @@ function Login() {
 
       <section className="flex items-centre justify-center my-40	">
       
-      {/* login container */}
       <div className="flex rounded-2xl shadow-lg max-w-3xl p-5">
-        {/* form */}
+        
 
         <div className="sm:w-1/2 px-8">
           <h2 className="font-bold text-2xl text-[#1a3813] "> Login </h2>
@@ -123,7 +122,7 @@ function Login() {
 
         </div>
 
-        {/* right image */}
+        
         <div className=" sm:block hidden w-1/2 ">
           <img className=" rounded-2xl h-full" src="https://images.pexels.com/photos/3571551/pexels-photo-3571551.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" alt =""/>
         </div>

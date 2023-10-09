@@ -5,14 +5,12 @@ import Locations from "./components/Location";
 import Home from "./components/Home";
 import Destinationsid from "./components/Destinationsid";
 import Review from "./components/Review";
-// import CollapsibleExample from "./components/Navbar";
 import Footer from "./components/Footer";
 import Signup from "./components/Signup";
 import Login from "./components/Login";
 import Header from './components/Header'
 import Logout from "./components/Logout";
 import { UserProvider } from "./components/UserContext";
-// import HomePage from "./components/Homepage"
 import HomePage from "./components/HomePage";
 
 
@@ -37,7 +35,6 @@ function App() {
     
     <UserProvider value={user}>
       <div className='max-w-[1440px] mx-auto bg-white'>
-        {/* <CollapsibleExample /> */}
         <Header/>
         
         <main>

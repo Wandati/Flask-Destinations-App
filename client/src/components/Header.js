@@ -22,23 +22,12 @@ let id = localStorage.getItem("id")
   return (
     <header className='py-6 border-b'> 
       <div className='container mx-auto flex justify-between items-center'>
-        {/* <Link to='/'>
-          <img src={Logo} alt='' /> 
-        </Link> */}
+        
         <div> 
         <Link to="/" className='text-2xl font-semibold leading-none mb-6 text-[#007423]'>DestinationKenya
           </Link>
         </div>
-        {/* <div>
-
-        <Link to="/locations" class="list">locations
-          </Link>
-          <Link to="/destinations" class="list">Destinations
-          </Link>
-          <Link to="/reviews" class="list">Reviews
-          </Link>
-
-        </div> */}
+        
         
           
         <div className='flex items-center gap-8'>

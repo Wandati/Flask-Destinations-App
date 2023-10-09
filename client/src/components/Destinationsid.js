@@ -7,7 +7,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { faStar as regularStar } from "@fortawesome/free-regular-svg-icons";
 import { faQuoteLeft } from "@fortawesome/free-solid-svg-icons";
-import AddReview from "./AddReview"; // Import the AddReview component
+import AddReview from "./AddReview"; 
 
 export default function Destinationsid() {
   const [destination, setDestination] = useState(null);
@@ -105,8 +105,6 @@ export default function Destinationsid() {
          </div>
       
       
-
-      {/* AddReview modal */}
       
     </section>
   );

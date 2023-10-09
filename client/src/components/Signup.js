@@ -50,9 +50,9 @@ function Signup() {
 
     <section className=" flex items-center justify-center my-40	">
       
-      {/* login container */}
+      
       <div className=" flex rounded-2xl shadow-lg max-w-3xl p-5">
-        {/* form */}
+       
 
         <div className="sm:w-1/2 px-8">
           <h2 className="font-bold text-2xl text-[#193d11] "> SignUp </h2>
@@ -129,68 +129,6 @@ function Signup() {
       </section>
 
 
-
-
-
-
-
-
-
-
-      {/* old form */}
-      {/* {signupSuccess ? (
-        <div className="alert alert-success">Sign-up successful! Redirecting to sign-in...</div>
-      ) : null}
-      <form onSubmit={formik.handleSubmit}>
-        <h3>Sign Up</h3>
-        <div className="mb-3">
-          <label htmlFor="username">Username</label>
-          <input
-            id="username"
-            name="username"
-            type="text"
-            onChange={formik.handleChange}
-            value={formik.values.username}
-          />
-          {formik.touched.username && formik.errors.username ? (
-            <div className="text-danger">{formik.errors.username}</div>
-          ) : null}
-        </div>
-        <div className="mb-3">
-          <label htmlFor="email">Email address</label>
-          <input
-            id="email"
-            name="email"
-            type="text"
-            onChange={formik.handleChange}
-            value={formik.values.email}
-          />
-          {formik.touched.email && formik.errors.email ? (
-            <div className="text-danger">{formik.errors.email}</div>
-          ) : null}
-        </div>
-        <div className="mb-3">
-          <label htmlFor="password">Password</label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            onChange={formik.handleChange}
-            value={formik.values.password}
-          />
-          {formik.touched.password && formik.errors.password ? (
-            <div className="text-danger">{formik.errors.password}</div>
-          ) : null}
-        </div>
-        <div className="d-grid">
-          <button type="submit" className="btn btn-primary">
-            Sign Up
-          </button>
-        </div>
-        <p className="forgot-password text-right">
-          Already registered? <Link to="/sign-in">Sign in?</Link>
-        </p>
-      </form> */}
     </div>
   );
 }

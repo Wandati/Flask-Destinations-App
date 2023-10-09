@@ -22,8 +22,7 @@ function Banner () {
           <img src="https://media-cdn.tripadvisor.com/media/photo-c/1280x250/14/10/2e/f2/kenya.jpg" alt=''/>
         </div>
       </div>
-      {/* <Search/> */}
-
+      
       <div className='flex flex-col lg:flex-row mt-20 min-h-[600px]'>
 
         <div className='lg:ml-8 xl:ml-[135px] flex flex-col items-center lg:items-start text-center lg:text-left justify-center flex-1 px-4 lg:px-0'>
