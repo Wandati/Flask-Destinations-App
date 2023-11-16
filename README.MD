@@ -29,7 +29,7 @@ Clone the repository:
 
 bash
 
-git clone https://github.com/Wandati/destination-review-app.git
+git clone https://github.com/Wandati/Flask-Destinations-app.git
 cd destination-review-app
 Install frontend dependencies:
 
@@ -45,12 +45,12 @@ cd ../backend
 pipenv install && pipenv shell
 
 bash
-Copy code
+
 python app.py
 Run the frontend:
 
 bash
-Copy code
+
 cd ../frontend
 npm start
 Visit http://localhost:3000 in your browser to access the app.
