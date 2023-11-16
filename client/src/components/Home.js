@@ -7,7 +7,7 @@ export default function Home() {
   const [locations, setLocations] = useState([]);
 
   useEffect(() => {
-    fetch("http://127.0.0.1:5555")
+    fetch("http://127.0.0.1:5555/locations")
       .then((res) => res.json())
       .then((data) => setLocations(data));
   }, []);
@@ -15,22 +15,25 @@ export default function Home() {
 
   const location = locations.map((loc) => {
     return (
-      <div key={loc.id} className="col-12">
-        <div className="card ">
+      <div key={loc.id} className="max-w-4xl rounded overflow-hidden shadow-lg mt-6 ">   
+        
           <img
             src={loc.image_url}
-            className="card-img-top img-fluid"
+            className="card-img-top img-fluid w-full h-4/5	"
             alt={loc.name}
           />
-        </div>
-        <div className="card-body">
-          <h5 className="card-title">{loc.name}</h5>
-          <p className="card-text">{loc.description} </p>
-          <button className="btn btn-dark">
-          <Link to={`/locations/${loc.id}`}>Click to view destinations</Link>
+        
+        <div class="font-bold text-xl mb-2 ml-6 mt-8"> {loc.name}
+         </div>
 
-          </button>
+        
+         <div class="px-6 py-4">
+          <p class="text-gray-700 text-base">{loc.description}</p>
+          </div>
+          <div className="flex justify-center mb-2" >
+          <span class="inline-block bg-[#007423] rounded-full px-3 py-1 text-sm text-white font-semibold text-[#1a3813]mr-2 mb-2 hover:bg-[#068f2f] "><Link  to={`/locations/${loc.id}`}>Click to view Destinations</Link> </span>
         </div>
+
       </div>
     );
   });
@@ -38,11 +41,11 @@ export default function Home() {
 
 
   return (
-    <>
-      <h1 className="text-center ">Our Locations</h1>
-      <div className="container">
+    <section className=" min-h-[1200px] flex flex-col items-center justify-center w-full flex-wrap grid-cols-2">
+      <h1 className="text-center font-bold text-4xl mt-5">Our Locations</h1>
+      
         <div className="row mt-3">{location}</div>
-      </div>
-    </>
+      
+    </section>
   );
 }

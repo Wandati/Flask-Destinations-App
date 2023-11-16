@@ -1,37 +1,19 @@
-import React from "react";
+import React from 'react';
 
-function Footer() {
-  const containerStyle = {
-    backgroundColor: "black", 
-    color: "white", 
-    marginTop: "200px", 
-  };
 
-  const textCenterStyle = {
-    backgroundColor: "rgba(0, 0, 0, 0.2)",
-  };
 
-  // const footerStyle = {
-  //   position: "fixed",
-  //   bottom: 0,
-  //   width: "100%",
-  // };
+function Footer () {
 
   return (
-    <footer className="text-center text-white" style={containerStyle}>
-      <div className="container p-4">
-        <section>
-          <div className="row">
-            {/* Your images here */}
-          </div>
-        </section>
+
+    <footer className='bg-[#014917] py-8 text-center text-white'>
+      <div className='container'>
+        Copyright &copy; 2023.all rights reserved.
       </div>
 
-      <div className="text-center p-3" style={textCenterStyle}>
-        © 2023 Copyright: Destination App
-      </div>
+
     </footer>
-  );
+  )
 }
 
 export default Footer;

@@ -1,4 +1,3 @@
-# Import necessary modules
 from app import app
 from models.dbconfig import db
 from models.review import Review
@@ -8,7 +7,6 @@ from models.user import User
 from faker import Faker
 from random import randint, choice as rc
 
-# Create a function to seed reviews
 
 def seed_reviews(num_reviews):
     Review.query.delete()
@@ -16,8 +14,8 @@ def seed_reviews(num_reviews):
     db.session.commit()
 
     fake = Faker()
-    users = User.query.all()  # Get all existing users
-    destinations = Destination.query.all()  # Get all existing destinations
+    users = User.query.all()  
+    destinations = Destination.query.all()  
     reviews = []
 
     for _ in range(num_reviews):
@@ -37,8 +35,7 @@ def seed_reviews(num_reviews):
     db.session.add_all(reviews)
     db.session.commit()
 
-# Use the function to seed reviews
 with app.app_context():
-    seed_reviews(10)  # Change the number as needed
+    seed_reviews(10)  
 
 print("Seed Data Has been Added Successfully!!!")

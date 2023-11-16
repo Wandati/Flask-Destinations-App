@@ -41,17 +41,6 @@ class Login(Resource):
                 "user_id":user.id
             }
         return new_user,200
-        
-        
-        # if user and user.authenticate(password):
-        #     session["user_id"] = user.id
-        #     new_user = {
-        #         "username":username,
-        #         "password":password,
-        #         "user_id":user.id
-        #     }
-        #     return new_user,200
-        # return {"error":"Invalid Username or Password"},401
 
 class CheckSession(Resource):
     def get(self):
@@ -176,23 +165,12 @@ class DestinationReviews(Resource):
             return {"error": "log in to Add Review" }, 401
         destination = Destination.query.filter_by(id=id).first()
 
-        # Check if a review with the same content already exists for the SAME destination
-        # existing_review = Review.query.join(ReviewDestination).filter(
-        #     ReviewDestination.destination_id == destination.id,
-        #     Review.rating == data['rating'],
-        #     Review.comment == data['comment'],
-        #     Review.user_id == session['user_id']
-        # ).first()
-
-        # if existing_review:
-        #     return {"error": "Duplicate review for this destination"}, 401
+        
 
         new_review = Review(
             rating=data['rating'],
             comment=data['comment'],
-            # user_id=session['user_id']
             user_id=data['user_id']
-            # user.username = new_review.user.username
         )
 
         db.session.add(new_review)
@@ -203,9 +181,7 @@ class DestinationReviews(Resource):
         db.session.commit()
 
         response = jsonify({"status": "Ok"})
-    # Set CORS headers in the response
-        response.headers.add("Access-Control-Allow-Origin", "http://localhost:3000")  # Replace "*" with your frontend's origin
-
+        response.headers.add("Access-Control-Allow-Origin", "http://localhost:3000")  
 
         return {"status": "Ok"}, 201
 
@@ -316,7 +292,7 @@ api.add_resource(ReviewResource, '/reviews')
 api.add_resource(ReviewById, '/reviews/<int:id>')
 api.add_resource(DisplayDestinations, '/destinations',endpoint="destinations")
 api.add_resource(DisplayDestinationsById, '/destinations/<int:id>')
-api.add_resource(DisplayLocations,'/',endpoint='/')
+api.add_resource(DisplayLocations,'/locations',endpoint='/locations')
 api.add_resource(DisplayLocationsById,'/locations/<int:id>')
 api.add_resource(CreateReviewDestinations,"/reviewdestinations",endpoint="reviewdestinations")
 api.add_resource(DestinationReviews,"/destinationreviews/<int:id>")

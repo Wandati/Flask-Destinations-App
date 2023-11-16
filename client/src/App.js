@@ -5,12 +5,14 @@ import Locations from "./components/Location";
 import Home from "./components/Home";
 import Destinationsid from "./components/Destinationsid";
 import Review from "./components/Review";
-import CollapsibleExample from "./components/Navbar";
 import Footer from "./components/Footer";
 import Signup from "./components/Signup";
 import Login from "./components/Login";
+import Header from './components/Header'
 import Logout from "./components/Logout";
 import { UserProvider } from "./components/UserContext";
+import HomePage from "./components/HomePage";
+
 
 function App() {
   const [user, setUser] = useState(null);
@@ -30,14 +32,17 @@ function App() {
   }, []);
 
   return (
+    
     <UserProvider value={user}>
-      <div className="container">
-        <CollapsibleExample />
+      <div className='max-w-[1440px] mx-auto bg-white'>
+        <Header/>
+        
         <main>
           <Routes>
+            <Route path= "/" element={<HomePage/>}/>
             <Route path="/locations/:id" element={<Locations />} />
             <Route path="/destinations/:id" element={<Destinationsid />} />
-            <Route path="/" element={<Home />} />
+            <Route path="/locations" element={<Home />} />
             <Route path="/destinations" element={<Destinations />} />
             <Route path="/reviews" element={<Review />} />
             <Route path="/sign-in" element={<Login />} />
