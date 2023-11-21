@@ -7,11 +7,11 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { faStar as regularStar } from "@fortawesome/free-regular-svg-icons";
 import { faQuoteLeft } from "@fortawesome/free-solid-svg-icons";
-import AddReview from "./AddReview"; 
+import AddReview from "./AddReview";
 
 export default function Destinationsid() {
   const [destination, setDestination] = useState(null);
-  const { id } = useParams(); 
+  const { id } = useParams();
 
   const [showModal, setShowModal] = useState(false);
 
@@ -27,7 +27,7 @@ export default function Destinationsid() {
   }
 
   const reviews = destination.reviews.map((rev) => {
-    const rating = rev.rating; 
+    const rating = rev.rating;
 
     const stars = [];
     for (let i = 1; i <= 5; i++) {
@@ -52,7 +52,9 @@ export default function Destinationsid() {
 
     return (
       <div key={rev.id} className="col-md-4 mb-5 mb-md-0">
-            <h5 className="font-bold text-2xl text-[#193d11] my-6">{rev.username}</h5>
+        <h5 className="font-bold text-2xl text-[#193d11] my-6">
+          {rev.username}
+        </h5>
         <p className="px-xl-3">
           <FontAwesomeIcon icon={faQuoteLeft} className="pe-2" />
           {rev.comment}
@@ -64,9 +66,9 @@ export default function Destinationsid() {
     );
   });
 
-  const handleOpenModal = () => {
-    setShowModal(true);
-  };
+  // const handleOpenModal = () => {
+  //   setShowModal(true);
+  // };
 
   const handleCloseModal = () => {
     setShowModal(false);
@@ -74,38 +76,31 @@ export default function Destinationsid() {
 
   return (
     <section className=" min-h-[1200px] flex flex-col items-center  w-full mt-10">
-      <div class="font-bold text-4xl mb-2 ml-6 mt-8"> {destination.name}
-         </div>
-         <div className="ounded overflow-hidden shadow-lg max-w-2xl ">
+      <div className="font-bold text-4xl mb-2 ml-6 mt-8">
+        {" "}
+        {destination.name}
+      </div>
+      <div className="ounded overflow-hidden shadow-lg max-w-2xl ">
+        <img
+          src={destination.image_url}
+          className="card-img-top img-fluid"
+          alt={destination.name}
+        />
 
-            <img
-                src={destination.image_url}
-                className="card-img-top img-fluid"
-                alt={destination.name}
-              />
-            
-            <div class="px-6 py-4">
-            <p class="text-gray-700 text-base">{destination.description}</p>
-            </div>
+        <div className="px-6 py-4">
+          <p className="text-gray-700 text-base">{destination.description}</p>
+        </div>
 
-            <div>
+        <div>
+          <h5 className="font-bold text-3xl text-[#193d11] my-6 text-center">
+            Reviews
+          </h5>
 
-            <h5 className="font-bold text-3xl text-[#193d11] my-6 text-center">Reviews</h5>
+          <div className="mx-6">{reviews}</div>
 
-               <div className="mx-6">{reviews}</div>
-
-
-
-                <AddReview show={showModal} handleClose={handleCloseModal} />
-
-            </div>
-          
-            
-
-         </div>
-      
-      
-      
+          <AddReview show={showModal} handleClose={handleCloseModal} />
+        </div>
+      </div>
     </section>
   );
 }
