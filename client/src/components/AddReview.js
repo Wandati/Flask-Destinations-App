@@ -2,9 +2,8 @@
 // import { Button, Modal, Form } from "react-bootstrap";
 // import { useParams } from "react-router-dom";
 
-
 // export default function AddReview() {
-//   const { id } = useParams(); 
+//   const { id } = useParams();
 
 //   const [show, setShow] = useState(false);
 //   const [comment, setComment] = useState("");
@@ -14,7 +13,6 @@
 //   const handleShow = () => setShow(true);
 //   const user = localStorage.getItem("id");
 
- 
 //   const handleSubmit = async () => {
 //     try {
 //       // Perform your API call to add a review here
@@ -25,26 +23,23 @@
 //         },
 //         body: JSON.stringify({ comment, rating, user_id: user }),
 //       });
-  
+
 //       if (response.status === 201) {
 //         const newReview = await response.json();
-        
-        
+
 //         setComment("");
 //         setRating(0);
-//         handleClose(); 
+//         handleClose();
 //       } else {
-        
 
-//         handleClose(); 
+//         handleClose();
 //         alert("Must sign in to add a review");
-        
+
 //       }
 //     } catch (error) {
 //       console.error("Error:", error);
 //     }
 //   };
-  
 
 //   return (
 //     <>
@@ -92,44 +87,42 @@
 //   );
 // }
 
-
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
-
 
 export default function AddReview() {
   const [show, setShow] = useState(false);
   const [comment, setComment] = useState("");
   const [rating, setRating] = useState(0);
   const user = localStorage.getItem("id");
-  const { id } = useParams(); 
+  const { id } = useParams();
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   const handleSubmit = async () => {
     try {
-      const response = await fetch(`http://127.0.0.1:5555/destinationreviews/${id}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ comment, rating, user_id: user }),
-      });
-  
+      const response = await fetch(
+        `http://127.0.0.1:5555/destinationreviews/${id}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ comment, rating, user_id: user }),
+        }
+      );
+
       if (response.status === 201) {
         const newReview = await response.json();
-        
-        
+        console.log(newReview);
+
         setComment("");
         setRating(0);
-        handleClose(); 
+        handleClose();
       } else {
-        
-
-        handleClose(); 
+        handleClose();
         alert("Must sign in to add a review");
-        
       }
     } catch (error) {
       console.error("Error:", error);

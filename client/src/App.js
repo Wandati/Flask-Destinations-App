@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Destinations from "./components/Destination";
 import Locations from "./components/Location";
 import Home from "./components/Home";
@@ -29,7 +29,7 @@ function App() {
       .then((userData) => {
         setUser(userData);
       });
-  }, []);
+  }, [id]);
 
   return (
     
