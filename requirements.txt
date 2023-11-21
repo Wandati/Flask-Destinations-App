@@ -6,6 +6,7 @@ Flask
 Flask-Bcrypt
 Flask-SQLAlchemy
 greenlet
+Flask-Bcrypt
 gunicorn
 itsdangerous
 Jinja2
