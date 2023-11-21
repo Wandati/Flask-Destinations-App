@@ -8,7 +8,7 @@ export default function Locations() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:5555/locations/${id}`)
+    fetch(`https://destinations-server-app.onrender.com/locations/${id}`)
       .then((res) => {
         if (!res.ok) {
           throw new Error("Network response was not ok");
