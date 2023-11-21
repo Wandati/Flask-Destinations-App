@@ -8,6 +8,7 @@ Flask-Cors
 Flask-JWT-Extended
 Flask-Migrate
 Flask-RESTful
+Flask-Bcrypt
 Flask-SQLAlchemy
 greenlet
 gunicorn
