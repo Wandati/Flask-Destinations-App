@@ -16,7 +16,7 @@ export default function Destinationsid() {
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:5555/destinations/${id}`)
+    fetch(`https://destinations-server-app.onrender.com/destinations/${id}`)
       .then((res) => res.json())
       .then((data) => setDestination(data))
       .catch((error) => console.error(error));
