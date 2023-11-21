@@ -9,7 +9,7 @@ function Review() {
   const user = localStorage.getItem("id");
 
   const updateComment = (reviewId, updatedComment) => {
-    fetch(`http://127.0.0.1:5555/reviews/${reviewId}`, {
+    fetch(`https://destinations-server-app.onrender.com/reviews/${reviewId}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -35,7 +35,7 @@ function Review() {
   };
 
   const deleteComment = (reviewId) => {
-    fetch(`http://127.0.0.1:5555/reviews/${reviewId}`, {
+    fetch(`https://destinations-server-app.onrender.com/reviews/${reviewId}`, {
       method: "DELETE",
     })
       .then((res) => {
@@ -53,7 +53,7 @@ function Review() {
 
   useEffect(() => {
     if (user) {
-      fetch(`http://127.0.0.1:5555/reviews/${user}`)
+      fetch(`https://destinations-server-app.onrender.com/reviews/${user}`)
         .then((res) => {
           if (res.status === 404) {
             alert("No reviews available.");
