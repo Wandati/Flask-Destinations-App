@@ -1,19 +1,13 @@
-import React from 'react';
+import React from "react";
 
-
-
-function Footer () {
-
+function Footer() {
   return (
-
-    <footer className='bg-[#014917] py-8 text-center text-white'>
-      <div className='container'>
+    <footer className="bg-[#014917] mt-2 py-8 text-center text-white">
+      <div className="container">
         Copyright &copy; 2023.all rights reserved.
       </div>
-
-
     </footer>
-  )
+  );
 }
 
 export default Footer;
