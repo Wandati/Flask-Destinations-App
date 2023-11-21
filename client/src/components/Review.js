@@ -83,7 +83,7 @@ function Review() {
               <FontAwesomeIcon icon={faQuoteLeft} className="pe-2" />
               {rev.comment}
             </p>
-            <ul className="list-unstyled d-flex justify-content-center mb-0">
+            <ul className="flex justify-center space-x-1 mb-3">
               {[1, 2, 3, 4, 5].map((index) => (
                 <li key={index}>
                   {index <= rev.rating ? (
