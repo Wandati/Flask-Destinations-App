@@ -16,7 +16,7 @@
 //   const handleSubmit = async () => {
 //     try {
 //       // Perform your API call to add a review here
-//       const response = await fetch(`http://127.0.0.1:5555/destinationreviews/${id}`, {
+//       const response = await fetch(`https://destinations-server-app.onrender.com/destinationreviews/${id}`, {
 //         method: "POST",
 //         headers: {
 //           "Content-Type": "application/json",
@@ -103,7 +103,7 @@ export default function AddReview() {
   const handleSubmit = async () => {
     try {
       const response = await fetch(
-        `http://127.0.0.1:5555/destinationreviews/${id}`,
+        `https://destinations-server-app.onrender.com/destinationreviews/${id}`,
         {
           method: "POST",
           headers: {
