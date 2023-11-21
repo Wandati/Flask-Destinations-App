@@ -9,7 +9,7 @@ function Logout() {
 
 
   useEffect(() => {
-    fetch("http://127.0.0.1:5555/logout", {
+    fetch("https://destinations-server-app.onrender.com/logout", {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
