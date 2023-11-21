@@ -19,7 +19,7 @@ function App() {
   const id = localStorage.getItem("id");
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:5555/checkuser/${id}`)
+    fetch(`https://destinations-server-app.onrender.com/checkuser/${id}`)
       .then((response) => {
         if (response.ok) {
           return response.json();
