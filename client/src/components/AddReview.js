@@ -120,6 +120,9 @@ export default function AddReview() {
         setComment("");
         setRating(0);
         handleClose();
+      } else if (response.status === 403) {
+        handleClose();
+        alert("Review must be between 1-10");
       } else {
         handleClose();
         alert("Must sign in to add a review");

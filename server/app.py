@@ -165,25 +165,27 @@ class DestinationReviews(Resource):
             return {"error": "log in to Add Review" }, 401
         destination = Destination.query.filter_by(id=id).first()
 
-        
 
-        new_review = Review(
-            rating=data['rating'],
-            comment=data['comment'],
-            user_id=data['user_id']
-        )
+        try:
+            new_review = Review(
+                rating=data['rating'],
+                comment=data['comment'],
+                user_id=data['user_id']
+            )
 
-        db.session.add(new_review)
-        db.session.commit()
+            db.session.add(new_review)
+            db.session.commit()
 
-        new_review_destination = ReviewDestination(review_id=new_review.id, destination_id=destination.id)
-        db.session.add(new_review_destination)
-        db.session.commit()
+            new_review_destination = ReviewDestination(review_id=new_review.id, destination_id=destination.id)
+            db.session.add(new_review_destination)
+            db.session.commit()
 
-        response = jsonify({"status": "Ok"})
-        response.headers.add("Access-Control-Allow-Origin", "http://localhost:3000")  
+            response = jsonify({"status": "Ok"})
+            response.headers.add("Access-Control-Allow-Origin", "http://localhost:3000")  
 
-        return {"status": "Ok"}, 201
+            return {"status": "Ok"}, 201
+        except Exception as e:
+            return jsonify({"error":str(e)}),401
 
         
         
@@ -242,7 +244,7 @@ class ReviewById(Resource):
                 'user_id': review.user_id
             })
         else:
-            return {'Error': 'Unauthorized Operation'},401
+            return {'Error': 'Unauthorized Operation'},403
 
 
 class CreateReviewDestinations(Resource):
@@ -265,23 +267,26 @@ class CreateReviewDestinations(Resource):
         if not review or not destination:
             return {"error": "Review or Destination does not exist"}, 404
 
-        new_review_destination = ReviewDestination(review=review, destination=destination)
-        db.session.add(new_review_destination)
-        db.session.commit()
+        try:
+            new_review_destination = ReviewDestination(review=review, destination=destination)
+            db.session.add(new_review_destination)
+            db.session.commit()
 
-        destination_data = {
-            "id": destination.id,
-            "name": destination.name,
-            "description": destination.description,
-            "image_url": destination.image_url,
-            "Reviews": [{
-                "id": review.review.id,
-                "rating": review.review.rating,
-                "comment": review.review.comment
-            } for review in destination.reviews
-            ]
-        }
-        return destination_data, 200
+            destination_data = {
+                "id": destination.id,
+                "name": destination.name,
+                "description": destination.description,
+                "image_url": destination.image_url,
+                "Reviews": [{
+                    "id": review.review.id,
+                    "rating": review.review.rating,
+                    "comment": review.review.comment
+                } for review in destination.reviews
+                ]
+            }
+            return destination_data, 200
+        except Exception as e:
+            return jsonify({"error":str(e)}),403
 
 api.add_resource(Login,"/login",endpoint="login")
 api.add_resource(Logout,"/logout",endpoint="logout")
