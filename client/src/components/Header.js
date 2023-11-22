@@ -36,9 +36,6 @@ function Header() {
           <Link to="/destinations" className="hover:text-[#0dcc46] transition">
             Destinations
           </Link>
-          <Link to="/reviews" className="hover:text-[#0dcc46] transition">
-            Reviews
-          </Link>
           {!id ? (
             <>
               <Link className="hover:text-[#0dcc46] transition" to="/sign-in">
@@ -52,9 +49,14 @@ function Header() {
               </Link>
             </>
           ) : (
-            <Link to="/logout" className="list">
-              <button onClick={(e) => handleLogoutClick(e)}>Logout</button>
-            </Link>
+            <>
+              <Link to="/reviews" className="hover:text-[#0dcc46] transition">
+                My Reviews
+              </Link>
+              <Link to="/logout" className="list">
+                <button onClick={(e) => handleLogoutClick(e)}>Logout</button>
+              </Link>
+            </>
           )}
           {/* <Link className='hover:text-[#0dcc46] transition' to='/sign-in'>Log in</Link>
           <Link className='bg-[#007423] hover:bg-[#0dcc46] text-white px-4 py-3 rounded-lg transition ' to='/sign-up'>Sign up</Link>
