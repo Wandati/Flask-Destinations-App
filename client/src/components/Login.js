@@ -25,7 +25,7 @@ function Login() {
     },
     validationSchema: formSchema,
     onSubmit: (values) => {
-      fetch("/login", {
+      fetch("https://destinations-server-app.onrender.com/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
