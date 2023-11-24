@@ -24,7 +24,7 @@ function Signup() {
     },
     validationSchema: formSchema,
     onSubmit: (values) => {
-      fetch("/signup", {
+      fetch("https://destinations-server-app.onrender.com/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
