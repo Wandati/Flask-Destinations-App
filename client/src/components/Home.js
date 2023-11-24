@@ -5,7 +5,7 @@ export default function Home() {
   const [locations, setLocations] = useState([]);
 
   useEffect(() => {
-    fetch("/locations")
+    fetch("https://destinations-server-app.onrender.com/locations")
       .then((res) => res.json())
       .then((data) => setLocations(data));
   }, []);
