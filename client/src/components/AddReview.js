@@ -101,32 +101,43 @@ export default function AddReview() {
   const handleShow = () => setShow(true);
 
   const handleSubmit = async () => {
+    if (!user) {
+      alert("You Must Be logged in To add a review");
+    }
+    // const new_rating=parseInt(rating)
     try {
-      const response = await fetch(
-        `https://destinations-server-app.onrender.com/destinationreviews/${id}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ comment, rating, user_id: user }),
-        }
-      );
+      const response = await fetch(`/destinationreviews/${id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ comment, rating, user_id: user }),
+      });
 
       if (response.status === 201) {
         const newReview = await response.json();
-        console.log(newReview);
-
+        alert(newReview.status || "Review Added Successfully!!!");
+        // console.log(newReview);
         setComment("");
         setRating(0);
         handleClose();
+      } else if (response.status === 401) {
+        const responseData = await response.json();
+        handleClose();
+        alert(responseData.error || "Review must be between 1-5");
+        // alert("Review must be between 1-10");
       } else if (response.status === 403) {
+        const responseData = await response.json();
         handleClose();
-        alert("Review must be between 1-10");
-      } else {
-        handleClose();
-        alert("Must sign in to add a review");
+        alert(
+          responseData.error ||
+            "Multiple Reviews for The Same Destinations are not Allowed"
+        );
       }
+      // } else if (response.status === 401) {
+      //   handleClose();
+      //   alert("Must sign in to add a review");
+      // }
     } catch (error) {
       console.error("Error:", error);
     }
