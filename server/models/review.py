@@ -11,10 +11,9 @@ class Review(db.Model):
     
     @validates("rating")
     def validates_rating(self,key,rating):
-
         rating = int(rating)
         if not (1<= rating <=5):
-            raise ValueError("Rating should be between 1 and 10.")
+            raise ValueError("Rating should be between 1 and 5.")
         return rating
     def __repr__(self):
         return f"Review comment: {self.comment} ,rating: {self.rating} by User: {self.user_id}"

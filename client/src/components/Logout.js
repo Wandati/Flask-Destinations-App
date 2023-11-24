@@ -1,15 +1,13 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useUser } from "./UserContext"; 
-
+import { useUser } from "./UserContext";
 
 function Logout() {
   const navigate = useNavigate();
-  const { setUser } = useUser(); 
-
+  const { setUser } = useUser();
 
   useEffect(() => {
-    fetch("https://destinations-server-app.onrender.com/logout", {
+    fetch("/logout", {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -17,9 +15,9 @@ function Logout() {
     })
       .then((res) => {
         if (res.status === 204) {
-          
-          document.cookie = "session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-          
+          document.cookie =
+            "session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+
           navigate("/sign-in");
         } else {
           console.error("Logout error:", res.status);
@@ -36,13 +34,12 @@ function Logout() {
     localStorage.removeItem("id");
     window.location = "/";
   }
-let id = localStorage.getItem("id")
-console.log(id)
+  let id = localStorage.getItem("id");
+  console.log(id);
   return (
     <div>
       {id != null && (
         <button onClick={(e) => handleLogoutClick(e)}>Logout</button>
-
       )}
     </div>
   );

@@ -162,9 +162,12 @@ class DestinationReviews(Resource):
         
         user= data['user_id']
         if not user:
-            return {"error": "log in to Add Review" }, 401
+            return {"error": "log in to Add Review" }
         destination = Destination.query.filter_by(id=id).first()
-
+        existing_review = db.session.query(ReviewDestination).\
+            join(Review).filter(Review.user_id == user, ReviewDestination.destination_id == id).first()
+        if existing_review:
+            return {"error": "Multiple Reviews for the same Destination are not allowed!"}, 403
 
         try:
             new_review = Review(
@@ -183,9 +186,9 @@ class DestinationReviews(Resource):
             response = jsonify({"status": "Ok"})
             response.headers.add("Access-Control-Allow-Origin", "http://localhost:3000")  
 
-            return {"status": "Ok"}, 201
+            return {"status": "Review Created Successfully.."}, 201
         except Exception as e:
-            return jsonify({"error":str(e)}),401
+            return{"error":str(e)},401
 
         
         
@@ -286,7 +289,7 @@ class CreateReviewDestinations(Resource):
             }
             return destination_data, 200
         except Exception as e:
-            return jsonify({"error":str(e)}),403
+            return {"error":str(e)},403
 
 api.add_resource(Login,"/login",endpoint="login")
 api.add_resource(Logout,"/logout",endpoint="logout")

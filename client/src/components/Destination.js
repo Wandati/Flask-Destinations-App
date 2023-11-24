@@ -5,7 +5,7 @@ export default function Destinations() {
   const [destinations, setDestinations] = useState([]);
 
   useEffect(() => {
-    fetch("https://destinations-server-app.onrender.com/destinations")
+    fetch("/destinations")
       .then((res) => res.json())
       .then((data) => setDestinations(data));
   }, []);

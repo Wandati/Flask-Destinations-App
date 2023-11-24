@@ -8,18 +8,17 @@ import Review from "./components/Review";
 import Footer from "./components/Footer";
 import Signup from "./components/Signup";
 import Login from "./components/Login";
-import Header from './components/Header'
+import Header from "./components/Header";
 import Logout from "./components/Logout";
 import { UserProvider } from "./components/UserContext";
 import HomePage from "./components/HomePage";
-
 
 function App() {
   const [user, setUser] = useState(null);
   const id = localStorage.getItem("id");
 
   useEffect(() => {
-    fetch(`https://destinations-server-app.onrender.com/checkuser/${id}`)
+    fetch(`/checkuser/${id}`)
       .then((response) => {
         if (response.ok) {
           return response.json();
@@ -32,14 +31,13 @@ function App() {
   }, [id]);
 
   return (
-    
     <UserProvider value={user}>
-      <div className='max-w-[1440px] mx-auto bg-white'>
-        <Header/>
-        
+      <div className="max-w-[1440px] mx-auto bg-white">
+        <Header />
+
         <main>
           <Routes>
-            <Route path= "/" element={<HomePage/>}/>
+            <Route path="/" element={<HomePage />} />
             <Route path="/locations/:id" element={<Locations />} />
             <Route path="/destinations/:id" element={<Destinationsid />} />
             <Route path="/locations" element={<Home />} />
