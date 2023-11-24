@@ -79,7 +79,7 @@ function Review() {
             <h2 className="font-bold text-2xl text-[#193d11] my-4 md:my-6 text-center">
               {rev.username}
             </h2>
-            <p className="px-3 md:px-6">
+            <p className="px-3 md:px-6 text-center ">
               <FontAwesomeIcon icon={faQuoteLeft} className="pe-2" />
               {rev.comment}
             </p>
