@@ -129,7 +129,7 @@ export default function AddReview() {
     }
 
     try {
-      const response = await fetch(`/destinationreviews/${id}`, {
+      const response = await fetch(`https://destinations-server-app.onrender.com/destinationreviews/${id}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
