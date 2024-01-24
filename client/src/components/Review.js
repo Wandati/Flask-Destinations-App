@@ -133,67 +133,7 @@ function Review() {
     </section>
   );
 
-  // return (
-  //   <section className=" min-h-[1200px] flex flex-col items-center w-full mx-10">
-  //     <div className="flex flex-wrap gap-8">
-  //       {reviews.map((rev) => (
-  //         <div key={rev.id} className="">
-  //           <h2 className="font-bold text-2xl text-[#193d11] my-6 text-center">
-  //             {rev.username}
-  //           </h2>
-  //           <p className="px-xl-3">
-  //             <FontAwesomeIcon icon={faQuoteLeft} className="pe-2" />
-  //             {rev.comment}
-  //           </p>
-  //           <ul className="flex justify-center space-x-1 mb-3">
-  //             {[1, 2, 3, 4, 5].map((index) => (
-  //               <li key={index}>
-  //                 {index <= rev.rating ? (
-  //                   <FontAwesomeIcon
-  //                     icon={solidStar}
-  //                     className="text-warning"
-  //                   />
-  //                 ) : (
-  //                   <FontAwesomeIcon
-  //                     icon={regularStar}
-  //                     className="text-warning"
-  //                   />
-  //                 )}
-  //               </li>
-  //             ))}
-  //           </ul>
-  //           <div>
-  //             <button
-  //               className="bg-[#007423] hover:bg-[#0dcc46] text-white px-4 py-3 rounded-lg transition"
-  //               onClick={() => {
-  //                 const updatedComment = prompt("Enter the updated comment:");
-  //                 if (updatedComment !== null) {
-  //                   updateComment(rev.id, updatedComment);
-  //                 }
-  //               }}
-  //             >
-  //               Update Comment
-  //             </button>
-  //             <button
-  //               className="bg-[#007423] hover:bg-[#0dcc46] text-white px-4 py-3 rounded-lg transition ml-2"
-  //               onClick={() => {
-  //                 if (
-  //                   window.confirm(
-  //                     "Are you sure you want to delete this comment?"
-  //                   )
-  //                 ) {
-  //                   deleteComment(rev.id);
-  //                 }
-  //               }}
-  //             >
-  //               Delete Comment
-  //             </button>
-  //           </div>
-  //         </div>
-  //       ))}
-  //     </div>
-  //   </section>
-  // );
+
 }
 
 export default Review;
