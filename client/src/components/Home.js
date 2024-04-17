@@ -32,6 +32,13 @@ export default function Home({loading,setLoading}) {
   // if (error) {
   //   return <div className="text-center">Error: {error}</div>;
   // }
+  
+const handleClick = () => {
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth" // Optional: Adds smooth scrolling effect
+  });
+};
 
   const location = locations.map((loc) => {
     return (
@@ -52,7 +59,7 @@ export default function Home({loading,setLoading}) {
         </div>
         <div className="flex justify-center mb-2">
           <span className="inline-block bg-[#007423] rounded-full px-3 py-1 text-sm text-white font-semibold text-[#1a3813] mr-2 mb-2 hover:bg-[#068f2f]">
-            <Link to={`/locations/${loc.id}`}>Click to view Destinations</Link>
+            <Link to={`/locations/${loc.id}`} onClick={handleClick}>Click to view Destinations</Link>
           </span>
         </div>
       </div>
