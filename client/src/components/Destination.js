@@ -47,15 +47,18 @@ export default function Destinations() {
   });
 
   return (
-    <section className="min-h-[1200px] flex flex-col items-center justify-center w-full flex-wrap grid-cols-2">
-      {loading ? (
+   <>
+      {loading && (
         <p className="text-center">Fetching Data...</p>
-      ) : (
-        <>
-          <h1 className="text-center font-bold text-4xl mt-5">Our Destinations</h1>
-          <div className="row mt-6">{destination}</div>
-        </>
       )}
-    </section>
+      <section className="min-h-[1200px] flex flex-col items-center justify-center w-full flex-wrap grid-cols-2">
+        {!loading && (
+          <>
+            <h1 className="text-center font-bold text-4xl mt-5">Our Destinations</h1>
+            <div className="row mt-6">{destination}</div>
+          </>
+        )}
+      </section>
+    </>
   );
 }
