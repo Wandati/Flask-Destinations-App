@@ -50,7 +50,7 @@ export default function Destinations() {
     <section className="min-h-[1200px] flex flex-col items-center justify-center w-full flex-wrap grid-cols-2">
       <h1 className="text-center font-bold text-4xl mt-5">Our Destinations</h1>
       {loading ? (
-        <p>Loading...</p>
+        <p>Fetching data...</p>
       ) : (
         <div className="row mt-6">{destination}</div>
       )}
