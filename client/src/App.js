@@ -48,7 +48,7 @@ function App() {
             <Route path="/logout" element={<Logout />} />
           </Routes>
         </main>
-        <Footer />
+      {!loading && <Footer />}
       </div>
     </UserProvider>
   );
