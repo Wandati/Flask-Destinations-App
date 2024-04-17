@@ -4,11 +4,12 @@ import { useEffect, useState } from "react";
 export default function Locations() {
   const { id } = useParams();
   const [location, setLocation] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     setLoading(true);
+    setError(null); // Reset error state on each fetch
     fetch(`https://destinations-server-app.onrender.com/locations/${id}`)
       .then((res) => {
         if (!res.ok) {
@@ -21,7 +22,7 @@ export default function Locations() {
         setLoading(false);
       })
       .catch((err) => {
-        setError(err);
+        setError(err.message); // Set error message to display
         setLoading(false);
       });
   }, [id]);
@@ -31,13 +32,13 @@ export default function Locations() {
   }
 
   if (error || !location) {
-    return <div>Error: Location not found</div>;
+    return <div>Error: {error || "Location not found"}</div>;
   }
 
   const destinations = location.destinations.map((dest) => (
     <div
       key={dest.id}
-      className="max-w-2xl rounded overflow-hidden shadow-lg mt-6 "
+      className="max-w-2xl rounded overflow-hidden shadow-lg mt-6"
     >
       <img src={dest.image_url} className="w-full" alt={dest.name} />
 
@@ -47,7 +48,7 @@ export default function Locations() {
         <p className="text-gray-700 text-base">{dest.description}</p>
       </div>
       <div>
-        <span className="inline-block bg-[#007423] rounded-full px-3 py-1 text-sm text-white font-semibold text-[#1a3813]mr-2 mb-2 hover:bg-[#068f2f] ">
+        <span className="inline-block bg-[#007423] rounded-full px-3 py-1 text-sm text-white font-semibold text-[#1a3813] mr-2 mb-2 hover:bg-[#068f2f]">
           <Link to={`/destinations/${dest.id}`}>
             Click to view the Destination Details
           </Link>{" "}
@@ -57,7 +58,7 @@ export default function Locations() {
   ));
 
   return (
-    <section className=" min-h-[1200px] flex flex-col items-center justify-center w-full">
+    <section className="min-h-[1200px] flex flex-col items-center justify-center w-full">
       <h1 className="text-center font-bold text-4xl mt-5">{location.name}</h1>
 
       <div className="mt-6">{destinations}</div>
