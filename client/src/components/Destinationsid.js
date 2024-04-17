@@ -9,7 +9,7 @@ import { faStar as regularStar } from "@fortawesome/free-regular-svg-icons";
 import { faQuoteLeft } from "@fortawesome/free-solid-svg-icons";
 import AddReview from "./AddReview";
 
-export default function Destinationsid({setLoading}) {
+export default function Destinationsid({loading,setLoading}) {
   const [destination, setDestination] = useState(null);
   const { id } = useParams();
 
@@ -83,7 +83,7 @@ export default function Destinationsid({setLoading}) {
 
     <section className=" min-h-[1200px] flex flex-col items-center  w-full mt-10">
     {!loading &&(
-      
+      <>
       <div className="font-bold text-4xl mb-2 ml-6 mt-8">
         {" "}
         {destination.name}
@@ -109,6 +109,7 @@ export default function Destinationsid({setLoading}) {
           <AddReview show={showModal} handleClose={handleCloseModal} />
         </div>
       </div>
+          </>
     )}
     </section>
           </>
