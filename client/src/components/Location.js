@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-export default function Destinations() {
-  const [destinations, setDestinations] = useState([]);
-  const [loading, setLoading] = useState(false);
+export default function Location({loading,setLoading}) {
+  const [location, setLocation] = useState([]);
+  // const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setLoading(true);
-    fetch("https://destinations-server-app.onrender.com/destinations")
+    fetch(`https://destinations-server-app.onrender.com/locations/${id}`)
       .then((res) => res.json())
       .then((data) => {
-        setDestinations(data);
+        setLocation(data);
         setLoading(false); // Set loading to false after data is fetched
       })
       .catch((error) => {
@@ -19,7 +19,12 @@ export default function Destinations() {
       });
   }, []);
 
-  const destination = destinations.map((dest) => {
+  if(!location){
+    setLoading(true);
+    return <h4 className="mt-4 text-center">Fetching Location</h4>
+  }
+
+  const destinations = location.destinations.map((dest) => {
     return (
       <div
         key={dest.id}
@@ -55,7 +60,7 @@ export default function Destinations() {
         {!loading && (
           <>
           <h1 className="text-center font-bold text-4xl mt-5">Our Destinations</h1>
-          <div className="row mt-6">{destination}</div>
+          <div className="row mt-6">{destinations}</div>
           </>
         )}
       </section>
