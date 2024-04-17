@@ -19,6 +19,7 @@ export default function Destinationsid({loading,setLoading}) {
     fetch(`https://destinations-server-app.onrender.com/destinations/${id}`)
       .then((res) => res.json())
       .then((data) => setDestination(data))
+      console.log(data);
       .catch((error) => console.error(error));
   }, [id]);
 
