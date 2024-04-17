@@ -25,6 +25,10 @@ export default function Location({loading,setLoading}) {
     console.log(location);
     return <h4 className="mt-4 text-center">Fetching Location...</h4>
   }
+  if (error || !location) {
+    return <div>Error: Location not found</div>;
+  }
+
 
   const destinations = location.destinations.map((dest) => {
     return (
