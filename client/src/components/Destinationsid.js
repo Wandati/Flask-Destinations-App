@@ -15,15 +15,18 @@ export default function Destinationsid({loading,setLoading}) {
 
   const [showModal, setShowModal] = useState(false);
 
-  useEffect(() => {
+ useEffect(() => {
     setLoading(true);
     fetch(`https://destinations-server-app.onrender.com/destinations/${id}`)
       .then((res) => res.json())
-      .then((data) => setDestination(data))
-      setLoading(false);
-      
-      .catch((error) => console.error(error));
-      setLoading(false);
+      .then((data) => {
+        setDestination(data);
+        setLoading(false); // Set loading to false after data is fetched
+      })
+      .catch((error) => {
+        console.error(error);
+        setLoading(false); // Handle errors and set loading to false
+      });
   }, [id]);
 
   // if (!destination) {
