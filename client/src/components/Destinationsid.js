@@ -21,7 +21,8 @@ export default function Destinationsid({loading,setLoading}) {
       .then((res) => res.json())
       .then((data) => {
         setDestination(data);
-        setLoading(false); // Set loading to false after data is fetched
+        setLoading(false); 
+        console.log(data);// Set loading to false after data is fetched
       })
       .catch((error) => {
         console.error(error);
