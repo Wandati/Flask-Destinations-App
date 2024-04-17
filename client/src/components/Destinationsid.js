@@ -16,18 +16,21 @@ export default function Destinationsid({loading,setLoading}) {
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
+    setLoading(true);
     fetch(`https://destinations-server-app.onrender.com/destinations/${id}`)
       .then((res) => res.json())
       .then((data) => setDestination(data))
+      setLoading(false);
       
       .catch((error) => console.error(error));
+      setLoading(false);
   }, [id]);
 
-  if (!destination) {
-    setLoading(false);
-    return <h4 className="text-center mt-4">Fetching Destination...</h4>;
+  // if (!destination) {
+  //   setLoading(false);
+  //   return <h4 className="text-center mt-4">Fetching Destination...</h4>;
    
-  }
+  // }
 
   const reviews = destination.reviews.map((rev) => {
     const rating = rev.rating;
