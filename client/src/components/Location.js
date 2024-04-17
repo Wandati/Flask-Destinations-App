@@ -1,34 +1,36 @@
 import { useEffect, useState } from "react";
-import { Link,useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
-export default function Location({loading,setLoading}) {
-  const [location, setLocation] = useState([]);
+export default function Location({ loading, setLoading }) {
+  const [location, setLocation] = useState(null);
   const { id } = useParams();
-  // const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setLoading(true);
     fetch(`https://destinations-server-app.onrender.com/locations/${id}`)
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return res.json();
+      })
       .then((data) => {
         setLocation(data);
-        setLoading(false); // Set loading to false after data is fetched
+        setLoading(false);
       })
       .catch((error) => {
-        console.error("Error fetching destinations:", error);
-        setLoading(false); // Handle errors and set loading to false
+        console.error("Error fetching location:", error);
+        setLoading(false);
       });
-  }, []);
+  }, [id, setLoading]);
 
-  if(!location){
-    setLoading(true);
-    console.log(location);
-    return <h4 className="mt-4 text-center">Fetching Location...</h4>
+  if (loading) {
+    return <h4 className="text-center mt-4">Fetching Location...</h4>;
   }
-  if (error) {
+
+  if (!location) {
     return <div>Error: Location not found</div>;
   }
-
 
   const destinations = location.destinations.map((dest) => {
     return (
@@ -59,18 +61,10 @@ export default function Location({loading,setLoading}) {
 
   return (
     <>
-      {loading && (
-      <h4 className="text-center mt-4">Fetching Data...</h4>
-      )}
-       <section className="min-h-[1200px] flex flex-col items-center justify-center w-full flex-wrap grid-cols-2">
-        {!loading && (
-          <>
-          <h1 className="text-center font-bold text-4xl mt-5">Our Destinations</h1>
-          <div className="row mt-6">{destinations}</div>
-          </>
-        )}
+      <section className="min-h-[1200px] flex flex-col items-center justify-center w-full flex-wrap grid-cols-2">
+        <h1 className="text-center font-bold text-4xl mt-5">Our Destinations</h1>
+        <div className="row mt-6">{destinations}</div>
       </section>
     </>
-    
   );
 }
