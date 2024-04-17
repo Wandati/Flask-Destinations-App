@@ -1,67 +1,65 @@
-import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
-export default function Locations() {
-  const { id } = useParams();
-  const [location, setLocation] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+export default function Destinations() {
+  const [destinations, setDestinations] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setLoading(true);
-    setError(null); // Reset error state on each fetch
-    fetch(`https://destinations-server-app.onrender.com/locations/${id}`)
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return res.json();
-      })
+    fetch("https://destinations-server-app.onrender.com/destinations")
+      .then((res) => res.json())
       .then((data) => {
-        setLocation(data);
-        setLoading(false);
+        setDestinations(data);
+        setLoading(false); // Set loading to false after data is fetched
       })
-      .catch((err) => {
-        setError(err.message); // Set error message to display
-        setLoading(false);
+      .catch((error) => {
+        console.error("Error fetching destinations:", error);
+        setLoading(false); // Handle errors and set loading to false
       });
-  }, [id]);
+  }, []);
 
-  if (loading) {
-    return <div>Fetching data...</div>;
-  }
+  const destination = destinations.map((dest) => {
+    return (
+      <div
+        key={dest.id}
+        className="max-w-4xl rounded overflow-hidden shadow-lg mt-6"
+      >
+        <img
+          src={dest.image_url}
+          className="card-img-top img-fluid w-full h-4/5"
+          alt={dest.name}
+        />
 
-  if (error || !location) {
-    return <div>Error: {error || "Location not found"}</div>;
-  }
-
-  const destinations = location.destinations.map((dest) => (
-    <div
-      key={dest.id}
-      className="max-w-2xl rounded overflow-hidden shadow-lg mt-6"
-    >
-      <img src={dest.image_url} className="w-full" alt={dest.name} />
-
-      <div className="font-bold text-xl mb-2 ml-6 mt-8"> {dest.name}</div>
-
-      <div className="px-6 py-4">
-        <p className="text-gray-700 text-base">{dest.description}</p>
+        <div className="font-bold text-xl mb-2 ml-6 mt-8"> {dest.name}</div>
+        <div className="px-6 py-4">
+          <p className="text-gray-700 text-base">{dest.description}</p>
+        </div>
+        <div className="flex justify-center mb-2">
+          <span className="inline-block bg-[#007423] rounded-full px-3 py-1 text-sm text-white font-semibold text-[#1a3813] mr-2 mb-2 hover:bg-[#068f2f]">
+            <Link to={`/destinations/${dest.id}`}>
+              Click to view the Destination Details
+            </Link>{" "}
+          </span>
+        </div>
       </div>
-      <div>
-        <span className="inline-block bg-[#007423] rounded-full px-3 py-1 text-sm text-white font-semibold text-[#1a3813] mr-2 mb-2 hover:bg-[#068f2f]">
-          <Link to={`/destinations/${dest.id}`}>
-            Click to view the Destination Details
-          </Link>{" "}
-        </span>
-      </div>
-    </div>
-  ));
+    );
+  });
 
   return (
-    <section className="min-h-[1200px] flex flex-col items-center justify-center w-full">
-      <h1 className="text-center font-bold text-4xl mt-5">{location.name}</h1>
-
-      <div className="mt-6">{destinations}</div>
-    </section>
+    <>
+      {loading && (
+      <h4 className="text-center mt-4">Fetching Data...</h4>
+      )}
+       <section className="min-h-[1200px] flex flex-col items-center justify-center w-full flex-wrap grid-cols-2">
+        {!loading && (
+          <>
+          <h1 className="text-center font-bold text-4xl mt-5">Our Destinations</h1>
+          <div className="row mt-6">{destination}</div>
+          </>
+        )}
+      </section>
+    </>
+    
   );
 }
