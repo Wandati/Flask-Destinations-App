@@ -22,6 +22,7 @@ export default function Location({loading,setLoading}) {
 
   if(!location){
     setLoading(true);
+    console.log(location);
     return <h4 className="mt-4 text-center">Fetching Location...</h4>
   }
 
