@@ -9,7 +9,7 @@ import { faStar as regularStar } from "@fortawesome/free-regular-svg-icons";
 import { faQuoteLeft } from "@fortawesome/free-solid-svg-icons";
 import AddReview from "./AddReview";
 
-export default function Destinationsid() {
+export default function Destinationsid({setLoading}) {
   const [destination, setDestination] = useState(null);
   const { id } = useParams();
 
@@ -23,6 +23,7 @@ export default function Destinationsid() {
   }, [id]);
 
   if (!destination) {
+    setLoading(false);
     return <div>Loading...</div>;
   }
 
