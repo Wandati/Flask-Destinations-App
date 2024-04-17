@@ -22,10 +22,11 @@ export default function Destinationsid({loading,setLoading}) {
       .catch((error) => console.error(error));
   }, [id]);
 
-  // if (!destination) {
-  //   setLoading(false);
-  //   return <div>Loading...</div>;
-  // }
+  if (!destination) {
+    // setLoading(false);
+    // return <div>Loading...</div>;
+    console.log("null")
+  }
 
   const reviews = destination.reviews.map((rev) => {
     const rating = rev.rating;
