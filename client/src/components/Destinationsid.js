@@ -78,7 +78,7 @@ export default function Destinationsid({loading,setLoading}) {
   return (
     <>
     {loading && (
-      <p> Loading...<p/>
+      <p> fetching Destination...<p/>
     )}
 
     <section className=" min-h-[1200px] flex flex-col items-center  w-full mt-10">
@@ -109,9 +109,9 @@ export default function Destinationsid({loading,setLoading}) {
           <AddReview show={showModal} handleClose={handleCloseModal} />
         </div>
       </div>
-          </>
+      </>
     )}
     </section>
-          </>
+    </>
   );
 }
