@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-export default function Home() {
+export default function Home({loading,setLoading}) {
   const [locations, setLocations] = useState([]);
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
