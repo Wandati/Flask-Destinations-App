@@ -82,7 +82,7 @@ export default function Destinationsid({loading,setLoading}) {
     )}
 
     <section className=" min-h-[1200px] flex flex-col items-center  w-full mt-10">
-    {!loading &&(
+    {!loading && destination && (
       <>
       <div className="font-bold text-4xl mb-2 ml-6 mt-8">
         {" "}
