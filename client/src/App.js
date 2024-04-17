@@ -16,6 +16,7 @@ import HomePage from "./components/HomePage";
 function App() {
   const [user, setUser] = useState(null);
   const id = localStorage.getItem("id");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetch(`/checkuser/${id}`)
@@ -40,8 +41,8 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/locations/:id" element={<Locations />} />
             <Route path="/destinations/:id" element={<Destinationsid />} />
-            <Route path="/locations" element={<Home />} />
-            <Route path="/destinations" element={<Destinations />} />
+            <Route path="/locations" element={<Home loading={loading} setLoading={setLoading} />} />
+            <Route path="/destinations" element={<Destinations loading={loading} setLoading={setLoading}/>} />
             <Route path="/reviews" element={<Review />} />
             <Route path="/sign-in" element={<Login />} />
             <Route path="/sign-up" element={<Signup />} />
