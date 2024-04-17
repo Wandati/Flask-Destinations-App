@@ -32,6 +32,7 @@ export default function Destinationsid({loading,setLoading}) {
 
   if (!destination) {
     setLoading(false);
+    console.log(destination);
     return <h4 className="text-center mt-4">Fetching Destination...</h4>;
    
   }
