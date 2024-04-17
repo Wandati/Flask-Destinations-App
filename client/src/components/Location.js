@@ -27,7 +27,7 @@ export default function Locations() {
   }, [id]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div>Fetching data...</div>;
   }
 
   if (error || !location) {
