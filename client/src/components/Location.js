@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link,useParams } from "react-router-dom";
 
 export default function Location({loading,setLoading}) {
   const [location, setLocation] = useState([]);
+  const { id } = useParams();
   // const [loading, setLoading] = useState(false);
 
   useEffect(() => {
