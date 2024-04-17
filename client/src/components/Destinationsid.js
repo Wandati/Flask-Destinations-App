@@ -78,7 +78,7 @@ export default function Destinationsid({loading,setLoading}) {
   return (
     <>
     {loading && (
-      <p> fetching Destination...<p/>
+      <p> fetching Destination...</p>
     )}
 
     <section className=" min-h-[1200px] flex flex-col items-center  w-full mt-10">
