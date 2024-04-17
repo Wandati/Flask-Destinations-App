@@ -30,11 +30,11 @@ export default function Destinationsid({loading,setLoading}) {
       });
   }, [id]);
 
-  // if (!destination) {
-  //   setLoading(false);
-  //   return <h4 className="text-center mt-4">Fetching Destination...</h4>;
+  if (!destination) {
+    setLoading(false);
+    return <h4 className="text-center mt-4">Fetching Destination...</h4>;
    
-  // }
+  }
 
   const reviews = destination.reviews.map((rev) => {
     const rating = rev.rating;
