@@ -40,7 +40,7 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/locations/:id" element={<Locations />} />
-            <Route path="/destinations/:id" element={<Destinationsid />} />
+            <Route path="/destinations/:id" element={<Destinationsid setLoading={setLoading}/>} />
             <Route path="/locations" element={<Home loading={loading} setLoading={setLoading} />} />
             <Route path="/destinations" element={<Destinations loading={loading} setLoading={setLoading}/>} />
             <Route path="/reviews" element={<Review />} />
