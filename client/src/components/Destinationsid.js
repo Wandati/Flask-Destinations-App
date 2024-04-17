@@ -19,14 +19,14 @@ export default function Destinationsid({loading,setLoading}) {
     fetch(`https://destinations-server-app.onrender.com/destinations/${id}`)
       .then((res) => res.json())
       .then((data) => setDestination(data))
-      console.log(data);
+      
       .catch((error) => console.error(error));
   }, [id]);
 
   if (!destination) {
-    // setLoading(false);
-    // return <div>Loading...</div>;
-    console.log("null")
+    setLoading(false);
+    return <h4 className="text-center mt-4">Fetching Destination...</h4>;
+   
   }
 
   const reviews = destination.reviews.map((rev) => {
