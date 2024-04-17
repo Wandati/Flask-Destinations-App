@@ -21,7 +21,7 @@ export default function Location({loading,setLoading}) {
 
   if(!location){
     setLoading(true);
-    return <h4 className="mt-4 text-center">Fetching Location</h4>
+    return <h4 className="mt-4 text-center">Fetching Location...</h4>
   }
 
   const destinations = location.destinations.map((dest) => {
