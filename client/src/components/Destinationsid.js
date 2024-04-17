@@ -22,10 +22,10 @@ export default function Destinationsid({setLoading}) {
       .catch((error) => console.error(error));
   }, [id]);
 
-  if (!destination) {
-    setLoading(false);
-    return <div>Loading...</div>;
-  }
+  // if (!destination) {
+  //   setLoading(false);
+  //   return <div>Loading...</div>;
+  // }
 
   const reviews = destination.reviews.map((rev) => {
     const rating = rev.rating;
@@ -76,6 +76,11 @@ export default function Destinationsid({setLoading}) {
   };
 
   return (
+    <>
+    {loading && (
+      <p> Loading...<p/>
+    )}
+
     <section className=" min-h-[1200px] flex flex-col items-center  w-full mt-10">
       <div className="font-bold text-4xl mb-2 ml-6 mt-8">
         {" "}
@@ -103,5 +108,6 @@ export default function Destinationsid({setLoading}) {
         </div>
       </div>
     </section>
+          </>
   );
 }
