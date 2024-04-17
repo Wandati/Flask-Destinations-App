@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import Destinations from "./components/Destination";
-import Locations from "./components/Location";
+import Location from "./components/Location";
 import Home from "./components/Home";
 import Destinationsid from "./components/Destinationsid";
 import Review from "./components/Review";
@@ -39,7 +39,7 @@ function App() {
         <main>
           <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="/locations/:id" element={<Locations />} />
+            <Route path="/locations/:id" element={<Location loading={loading} setLoading={setLoading}/>} />
             <Route path="/destinations/:id" element={<Destinationsid loading={loading} setLoading={setLoading}/>} />
             <Route path="/locations" element={<Home loading={loading} setLoading={setLoading} />} />
             <Route path="/destinations" element={<Destinations loading={loading} setLoading={setLoading}/>} />
