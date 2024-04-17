@@ -3,11 +3,15 @@ import { Link } from "react-router-dom";
 
 export default function Destinations() {
   const [destinations, setDestinations] = useState([]);
+  const [loading, setLoading] = useState(false);
+  
 
   useEffect(() => {
+    setLoading(true);
     fetch("https://destinations-server-app.onrender.com/destinations")
       .then((res) => res.json())
       .then((data) => setDestinations(data));
+    setLoading(false);
   }, []);
 
   const destination = destinations.map((dest) => {
