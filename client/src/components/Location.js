@@ -4,10 +4,11 @@ import { useEffect, useState } from "react";
 export default function Locations() {
   const { id } = useParams();
   const [location, setLocation] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    setLoading(true);
     fetch(`https://destinations-server-app.onrender.com/locations/${id}`)
       .then((res) => {
         if (!res.ok) {
