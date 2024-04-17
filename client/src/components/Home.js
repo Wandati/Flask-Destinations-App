@@ -64,7 +64,7 @@ export default function Home() {
       {loading && (
         <h4 className="text-center mt-4">Fetching data...</h4>
       )}
-      <section className="min-h-[1200px] flex flex-col items-center justify-center w-full">
+ <section className="min-h-[1200px] flex flex-col items-center justify-center w-full flex-wrap grid-cols-2">
         {!loading && (
           <>
            <h1 className="text-center font-bold text-4xl mt-5">Our Locations</h1>
