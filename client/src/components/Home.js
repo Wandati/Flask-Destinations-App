@@ -25,13 +25,13 @@ export default function Home({loading,setLoading}) {
       });
   }, []);
 
-  if (loading) {
-    return <div className="text-center">Fetching data...</div>;
-  }
+  // if (loading) {
+  //   return <div className="text-center">Fetching data...</div>;
+  // }
 
-  if (error) {
-    return <div className="text-center">Error: {error}</div>;
-  }
+  // if (error) {
+  //   return <div className="text-center">Error: {error}</div>;
+  // }
 
   const location = locations.map((loc) => {
     return (
