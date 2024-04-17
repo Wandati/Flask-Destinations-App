@@ -22,7 +22,7 @@ export default function Destinationsid({loading,setLoading}) {
       .then((data) => {
         setDestination(data);
         setLoading(false); 
-        console.log(data);// Set loading to false after data is fetched
+        // console.log(data);// Set loading to false after data is fetched
       })
       .catch((error) => {
         console.error(error);
