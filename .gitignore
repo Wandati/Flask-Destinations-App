@@ -3,3 +3,4 @@ __pycache__/
 .venv/
 client/.npm-cache/
 server/flask_session/
+server/instance/

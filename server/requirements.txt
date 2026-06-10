@@ -9,6 +9,7 @@ Flask-JWT-Extended
 Flask-Migrate
 Flask-RESTful
 Flask-Bcrypt
+Flask-Limiter
 Flask-SQLAlchemy
 greenlet
 gunicorn

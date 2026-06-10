@@ -1,4 +1,4 @@
-from config import app,db,api
+from config import app,db,api,limiter
 from models.location import Location
 from models.review import Review
 from models.reviewdestination import ReviewDestination
@@ -9,6 +9,8 @@ from flask import session,request
 import os
 
 class Signup(Resource):
+    decorators = [limiter.limit("5 per minute")]
+
     def post(self):
         data = request.get_json()
         username = data["username"]
@@ -24,6 +26,8 @@ class Signup(Resource):
         session["user_id"] = new_user.id
         return {},201
 class Login(Resource):
+    decorators = [limiter.limit("10 per minute")]
+
     def post(self):
         data= request.get_json()
         username = data["username"]
@@ -59,11 +63,16 @@ class Logout(Resource):
     
 class CheckUser (Resource):
     def get(self, id):
-        user = User.query.filter_by(id=id).first()
+        user_id = session.get("user_id")
+        if not user_id or user_id != id:
+            return {"error": "Unauthorized"}, 401
+        user = User.query.filter_by(id=user_id).first()
+        if not user:
+            return {"error": "User not found"}, 404
         new_user = {
             "id":user.id,
             "username":user.username
-        } 
+        }
 
         return new_user, 200
     
