@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-export default function Home({loading,setLoading}) {
+export default function Home({ loading, setLoading }) {
   const [locations, setLocations] = useState([]);
-  // const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     setLoading(true);
-    fetch("https://destinations-server-app.onrender.com/locations")
+    fetch("/locations")
       .then((res) => {
         if (!res.ok) {
           throw new Error("Network response was not ok");
@@ -23,44 +22,40 @@ export default function Home({loading,setLoading}) {
         setError(error.message);
         setLoading(false);
       });
-  }, []);
-
-  // if (loading) {
-  //   return <div className="text-center">Fetching data...</div>;
-  // }
-
-  // if (error) {
-  //   return <div className="text-center">Error: {error}</div>;
-  // }
+  }, [setLoading]);
   
 const handleClick = () => {
   window.scrollTo({
     top: 0,
-    behavior: "smooth" // Optional: Adds smooth scrolling effect
+    behavior: "smooth"
   });
 };
 
   const location = locations.map((loc) => {
     return (
-      <div
-        key={loc.id}
-        className="max-w-4xl rounded overflow-hidden shadow-lg mt-6"
-      >
+      <div key={loc.id} className="destination-card">
         <img
           src={loc.image_url}
-          className="card-img-top img-fluid w-full h-4/5"
+          className="destination-card-image"
           alt={loc.name}
         />
 
-        <div className="font-bold text-xl mb-2 ml-6 mt-8"> {loc.name}</div>
-
-        <div className="px-6 py-4">
-          <p className="text-gray-700 text-base">{loc.description}</p>
+        <div className="px-5 pt-5">
+          <p className="text-xs font-semibold uppercase text-[#0b6b2b]">Location</p>
+          <h2 className="mt-1 text-xl font-bold text-slate-900">{loc.name}</h2>
         </div>
-        <div className="flex justify-center mb-2">
-          <span className="inline-block bg-[#007423] rounded-full px-3 py-1 text-sm text-white font-semibold text-[#1a3813] mr-2 mb-2 hover:bg-[#068f2f]">
-            <Link to={`/locations/${loc.id}`} onClick={handleClick}>Click to view Destinations</Link>
-          </span>
+
+        <div className="flex flex-1 flex-col px-5 py-4">
+          <p className="text-base leading-7 text-gray-700">{loc.description}</p>
+        </div>
+        <div className="px-5 pb-5">
+          <Link
+            className="primary-button w-full sm:w-auto"
+            to={`/locations/${loc.id}`}
+            onClick={handleClick}
+          >
+            View destinations
+          </Link>
         </div>
       </div>
     );
@@ -68,14 +63,28 @@ const handleClick = () => {
 
   return (
      <>
-      {loading && (
-        <h4 className="text-center mt-4">Fetching Data...Might Take a while due to render's spin down with inactivity, which can delay requests by 50 seconds or more. </h4>
-      )}
- <section className="min-h-[1200px] flex flex-col items-center justify-center w-full flex-wrap grid-cols-2">
+      <section className="w-full py-4 sm:py-8">
+        {loading && (
+          <h4 className="page-kicker">
+            Fetching locations...
+          </h4>
+        )}
+        {error && !loading && (
+          <p className="mx-auto max-w-2xl text-center text-red-700">{error}</p>
+        )}
         {!loading && (
           <>
-           <h1 className="text-center font-bold text-4xl mt-5">Our Locations</h1>
-           <div className="mt-6">{location}</div>
+           <h1 className="page-title">Explore Locations</h1>
+           <p className="page-kicker">
+             Start with a region, then drill into the destinations connected to it.
+           </p>
+           {locations.length > 0 ? (
+             <div className="card-grid">{location}</div>
+           ) : (
+             <div className="surface-panel mx-auto mt-8 max-w-xl p-6 text-center text-slate-600">
+               No locations are available yet.
+             </div>
+           )}
           </>
         )}
       </section>

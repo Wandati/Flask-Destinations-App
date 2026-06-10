@@ -6,20 +6,24 @@ export default function AddReview() {
   const [show, setShow] = useState(false);
   const [comment, setComment] = useState("");
   const [rating, setRating] = useState(0);
+  const [message, setMessage] = useState("");
   const user = localStorage.getItem("id");
   const { id } = useParams();
 
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setShow(false);
+    setMessage("");
+  };
   const handleShow = () => setShow(true);
 
   const handleSubmit = async () => {
     if (!user) {
-      alert("You must be logged in to add a review");
+      setMessage("You must be logged in to add a review.");
       return;
     }
 
     try {
-      const response = await fetch(`https://destinations-server-app.onrender.com/destinationreviews/${id}`, {
+      const response = await fetch(`/destinationreviews/${id}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -29,65 +33,73 @@ export default function AddReview() {
 
       if (response.status === 201) {
         const newReview = await response.json();
-        alert(newReview.status || "Review added successfully!!!");
+        setMessage(newReview.status || "Review added successfully.");
         setComment("");
         setRating(0);
-        handleClose();
       } else if (response.status === 401 || response.status === 403) {
         const responseData = await response.json();
-        handleClose();
-        alert(responseData.error || "Error adding review");
+        setMessage(responseData.error || "Error adding review.");
       }
     } catch (error) {
       console.error("Error:", error);
+      setMessage("Something went wrong while saving the review.");
     }
   };
 
   return (
     <div>
-      <button
-        onClick={handleShow}
-        className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
-      >
+      <button onClick={handleShow} className="primary-button">
         Add Review
       </button>
 
       {show && (
-        <div className="fixed inset-0 flex items-center justify-center z-50">
-          <div className="modal-bg inset-0 bg-black opacity-50"></div>
-          <div className="modal-content bg-white w-full md:w-1/2 p-4 rounded-lg shadow-lg">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl md:text-2xl font-bold">Add Review</h2>
-              <button onClick={handleClose} className="text-gray-700">
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div className="modal-bg absolute inset-0 bg-slate-950/60"></div>
+          <div className="modal-content relative mx-4 max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-lg bg-white p-5 shadow-2xl">
+            <div className="mb-5 flex items-center justify-between gap-4">
+              <div>
+                <p className="text-sm font-semibold uppercase text-[#0b6b2b]">Review</p>
+                <h2 className="text-2xl font-bold text-slate-900">Add Review</h2>
+              </div>
+              <button onClick={handleClose} className="secondary-button" type="button">
                 Close
               </button>
             </div>
-            <form>
+            {message && (
+              <div className="mb-4 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+                {message}
+              </div>
+            )}
+            <form onSubmit={(event) => event.preventDefault()}>
               <div className="mb-4">
-                <label className="block text-gray-600 font-semibold">
+                <label className="mb-2 block font-semibold text-slate-700">
                   Comment
                 </label>
-                <input
-                  type="text"
+                <textarea
                   value={comment}
                   onChange={(e) => setComment(e.target.value)}
-                  className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+                  className="form-input min-h-[8rem] resize-y"
+                  placeholder="Share what stood out..."
                 />
               </div>
               <div className="mb-4">
-                <label className="block text-gray-600 font-semibold">
+                <label className="mb-2 block font-semibold text-slate-700">
                   Rating
                 </label>
                 <input
                   type="number"
+                  min="0"
+                  max="5"
+                  step="1"
                   value={rating}
                   onChange={(e) => setRating(e.target.value)}
-                  className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+                  className="form-input"
                 />
               </div>
               <button
                 onClick={handleSubmit}
-                className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
+                className="primary-button w-full"
+                type="button"
               >
                 Save Review
               </button>

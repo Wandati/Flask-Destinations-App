@@ -7,7 +7,7 @@ export default function Location({ loading, setLoading }) {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`https://destinations-server-app.onrender.com/locations/${id}`)
+    fetch(`/locations/${id}`)
       .then((res) => {
         if (!res.ok) {
           throw new Error("Network response was not ok");
@@ -25,35 +25,36 @@ export default function Location({ loading, setLoading }) {
   }, [id, setLoading]);
 
   if (loading) {
-    return <h4 className="text-center mt-4">Fetching Location...</h4>;
+    return <h4 className="mt-4 text-center text-slate-600">Fetching Location...</h4>;
   }
 
   if (!location) {
-    return <div>Error: Location not found</div>;
+    return <div className="py-10 text-center text-red-700">Error: Location not found</div>;
   }
 
   const destinations = location.destinations.map((dest) => {
     return (
-      <div
-        key={dest.id}
-        className="max-w-4xl rounded overflow-hidden shadow-lg mt-6"
-      >
+      <div key={dest.id} className="destination-card">
         <img
           src={dest.image_url}
-          className="card-img-top img-fluid w-full h-4/5"
+          className="destination-card-image"
           alt={dest.name}
         />
 
-        <div className="font-bold text-xl mb-2 ml-6 mt-8"> {dest.name}</div>
-        <div className="px-6 py-4">
-          <p className="text-gray-700 text-base">{dest.description}</p>
+        <div className="px-5 pt-5">
+          <p className="text-xs font-semibold uppercase text-[#0b6b2b]">Destination</p>
+          <h2 className="mt-1 text-xl font-bold text-slate-900">{dest.name}</h2>
         </div>
-        <div className="flex justify-center mb-2">
-          <span className="inline-block bg-[#007423] rounded-full px-3 py-1 text-sm text-white font-semibold text-[#1a3813] mr-2 mb-2 hover:bg-[#068f2f]">
-            <Link to={`/destinations/${dest.id}`}>
-              Click to view the Destination Details
-            </Link>{" "}
-          </span>
+        <div className="flex flex-1 flex-col px-5 py-4">
+          <p className="text-base leading-7 text-gray-700">{dest.description}</p>
+        </div>
+        <div className="px-5 pb-5">
+          <Link
+            className="primary-button w-full sm:w-auto"
+            to={`/destinations/${dest.id}`}
+          >
+            View details
+          </Link>
         </div>
       </div>
     );
@@ -61,9 +62,16 @@ export default function Location({ loading, setLoading }) {
 
   return (
     <>
-      <section className="min-h-[1200px] flex flex-col items-center justify-center w-full flex-wrap grid-cols-2">
-        <h1 className="text-center font-bold text-4xl mt-5">Our Destinations</h1>
-        <div className="row mt-6">{destinations}</div>
+      <section className="w-full py-4 sm:py-8">
+        <h1 className="page-title">{location.name}</h1>
+        <p className="page-kicker">{location.description}</p>
+        {location.destinations.length > 0 ? (
+          <div className="card-grid">{destinations}</div>
+        ) : (
+          <div className="surface-panel mx-auto mt-8 max-w-xl p-6 text-center text-slate-600">
+            No destinations have been added for this location yet.
+          </div>
+        )}
       </section>
     </>
   );

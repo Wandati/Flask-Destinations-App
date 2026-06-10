@@ -2,6 +2,67 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    background: #f6f8f4;
+    color: #172016;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  img {
+    display: block;
+  }
+}
+
+@layer components {
+  .page-shell {
+    @apply mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8;
+  }
+
+  .page-title {
+    @apply text-center text-3xl font-bold text-[#172016] sm:text-4xl;
+  }
+
+  .page-kicker {
+    @apply mx-auto mt-3 max-w-2xl text-center text-base leading-7 text-slate-600;
+  }
+
+  .card-grid {
+    @apply mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3;
+  }
+
+  .destination-card {
+    @apply flex h-full flex-col overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm transition duration-200 hover:-translate-y-1 hover:shadow-xl;
+  }
+
+  .destination-card-image {
+    @apply h-52 w-full object-cover sm:h-60;
+  }
+
+  .primary-button {
+    @apply inline-flex items-center justify-center rounded-lg bg-[#0b6b2b] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[#12843a] focus:outline-none focus:ring-2 focus:ring-[#0b6b2b] focus:ring-offset-2;
+  }
+
+  .secondary-button {
+    @apply inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-[#0b6b2b] hover:text-[#0b6b2b] focus:outline-none focus:ring-2 focus:ring-[#0b6b2b] focus:ring-offset-2;
+  }
+
+  .form-input {
+    @apply w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#0b6b2b] focus:ring-2 focus:ring-[#0b6b2b]/20;
+  }
+
+  .surface-panel {
+    @apply rounded-lg border border-slate-200 bg-white shadow-sm;
+  }
+}
+
 /* @layer base {
   body {
     @apply  bg-[#ebf5db];

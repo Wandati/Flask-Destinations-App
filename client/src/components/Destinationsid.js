@@ -9,15 +9,15 @@ import { faStar as regularStar } from "@fortawesome/free-regular-svg-icons";
 import { faQuoteLeft } from "@fortawesome/free-solid-svg-icons";
 import AddReview from "./AddReview";
 
-export default function Destinationsid({loading,setLoading}) {
+export default function Destinationsid({ loading, setLoading }) {
   const [destination, setDestination] = useState(null);
   const { id } = useParams();
 
   const [showModal, setShowModal] = useState(false);
 
- useEffect(() => {
+  useEffect(() => {
     setLoading(true);
-    fetch(`https://destinations-server-app.onrender.com/destinations/${id}`)
+    fetch(`/destinations/${id}`)
       .then((res) => res.json())
       .then((data) => {
         setDestination(data);
@@ -28,13 +28,10 @@ export default function Destinationsid({loading,setLoading}) {
         console.error(error);
         setLoading(false); // Handle errors and set loading to false
       });
-  }, [id]);
+  }, [id, setLoading]);
 
   if (!destination) {
-    setLoading(true);
-    // console.log(destination);
-    return <h4 className="text-center mt-4">Fetching Destination...</h4>;
-   
+    return <h4 className="mt-4 text-center text-slate-600">Fetching Destination...</h4>;
   }
 
   const reviews = destination.reviews.map((rev) => {
@@ -44,33 +41,33 @@ export default function Destinationsid({loading,setLoading}) {
     for (let i = 1; i <= 5; i++) {
       if (i <= rating) {
         stars.push(
-          <FontAwesomeIcon key={i} icon={solidStar} className="text-warning" />
+          <FontAwesomeIcon key={i} icon={solidStar} className="text-amber-400" />
         );
       } else if (i - 0.5 === rating) {
         stars.push(
-          <FontAwesomeIcon key={i} icon={halfStar} className="text-warning" />
+          <FontAwesomeIcon key={i} icon={halfStar} className="text-amber-400" />
         );
       } else {
         stars.push(
           <FontAwesomeIcon
             key={i}
             icon={regularStar}
-            className="text-warning"
+            className="text-amber-400"
           />
         );
       }
     }
 
     return (
-      <div key={rev.id} className="col-md-4 mb-5 mb-md-0">
-        <h5 className="font-bold text-2xl text-[#193d11] my-6">
+      <div key={rev.id} className="surface-panel p-4">
+        <h5 className="mb-3 text-lg font-bold text-slate-900">
           {rev.username}
         </h5>
-        <p className="px-xl-3">
+        <p className="break-words text-slate-700">
           <FontAwesomeIcon icon={faQuoteLeft} className="pe-2" />
           {rev.comment}
         </p>
-        <ul className="list-unstyled d-flex justify-content-center mb-0">
+        <ul className="mt-3 flex gap-1">
           {stars}
         </ul>
       </div>
@@ -87,37 +84,56 @@ export default function Destinationsid({loading,setLoading}) {
 
   return (
     <>
-    {loading && (
-      <p> fetching Destination...</p>
-    )}
+    {loading && <p className="text-center text-slate-600">Fetching Destination...</p>}
 
-    <section className=" min-h-[1200px] flex flex-col items-center  w-full mt-10">
+    <section className="w-full py-4 sm:py-8">
     {!loading && destination && (
       <>
-      <div className="font-bold text-4xl mb-2 ml-6 mt-8">
-        {" "}
-        {destination.name}
+      <div className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr]">
+        <div className="overflow-hidden rounded-lg bg-slate-900 shadow-xl">
+          <img
+            src={destination.image_url}
+            className="h-[360px] w-full object-cover sm:h-[520px]"
+            alt={destination.name}
+          />
+        </div>
+
+        <div className="flex flex-col justify-center">
+          <p className="mb-2 text-sm font-semibold uppercase text-[#0b6b2b]">
+            Destination
+          </p>
+          <h1 className="text-4xl font-bold leading-tight text-slate-900 sm:text-5xl">
+            {destination.name}
+          </h1>
+          <p className="mt-5 text-base leading-8 text-slate-700">
+            {destination.description}
+          </p>
+          <div className="mt-6">
+            <AddReview show={showModal} handleClose={handleCloseModal} />
+          </div>
+        </div>
       </div>
-      <div className="ounded overflow-hidden shadow-lg max-w-2xl ">
-        <img
-          src={destination.image_url}
-          className="card-img-top img-fluid"
-          alt={destination.name}
-        />
 
-        <div className="px-6 py-4">
-          <p className="text-gray-700 text-base">{destination.description}</p>
+      <div className="mt-10">
+        <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p className="text-sm font-semibold uppercase text-[#0b6b2b]">
+              Traveler feedback
+            </p>
+            <h2 className="text-2xl font-bold text-slate-900 sm:text-3xl">
+              Reviews
+            </h2>
+          </div>
+          <p className="text-sm text-slate-500">{destination.reviews.length} total</p>
         </div>
 
-        <div>
-          <h5 className="font-bold text-3xl text-[#193d11] my-6 text-center">
-            Reviews
-          </h5>
-
-          <div className="mx-6">{reviews}</div>
-
-          <AddReview show={showModal} handleClose={handleCloseModal} />
-        </div>
+        {destination.reviews.length > 0 ? (
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{reviews}</div>
+        ) : (
+          <div className="surface-panel p-6 text-center text-slate-600">
+            No reviews yet. Add the first one.
+          </div>
+        )}
       </div>
       </>
     )}

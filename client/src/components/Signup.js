@@ -24,7 +24,7 @@ function Signup() {
     },
     validationSchema: formSchema,
     onSubmit: (values) => {
-      fetch("https://destinations-server-app.onrender.com/signup", {
+      fetch("/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -47,23 +47,22 @@ function Signup() {
 
   return (
     <div>
-
-    <section className=" flex items-center justify-center my-40	">
-      
-      
-      <div className=" flex rounded-2xl shadow-lg max-w-3xl p-5">
-       
-
-        <div className="sm:w-1/2 px-8">
-          <h2 className="font-bold text-2xl text-[#193d11] "> SignUp </h2>
+    <section className="flex justify-center py-8 sm:py-14">
+      <div className="grid w-full max-w-5xl overflow-hidden rounded-lg bg-white shadow-xl md:grid-cols-2">
+        <div className="px-5 py-8 sm:px-8 lg:px-10">
+          <p className="mb-2 text-sm font-semibold uppercase text-[#0b6b2b]">Create account</p>
+          <h1 className="text-3xl font-bold text-slate-900">Sign up</h1>
+          <p className="mt-3 text-sm leading-6 text-slate-600">
+            Create an account to leave destination reviews.
+          </p>
 
           {signupSuccess ? (
-        <div className="alert alert-success text-green-700 mt-5">Sign-up successful! Redirecting to sign-in...</div>
+        <div className="mt-5 rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-green-700">Sign-up successful! Redirecting to sign-in...</div>
       ) : null}
 
           <form onSubmit={formik.handleSubmit} className="flex flex-col gap-4 mt-8">
-           <label htmlFor="username">Username</label>
-            <input  className="p-2 rounded-xl border w-full"
+           <label className="font-semibold text-slate-700" htmlFor="username">Username</label>
+            <input  className="form-input"
              id="username"
             name="username"
             type="text"
@@ -74,21 +73,21 @@ function Signup() {
            {formik.touched.username && formik.errors.username ? (
             <div className="text-red-900">{formik.errors.username}</div>
           ) : null}
-          <label htmlFor="email">Email address</label>
-          <input className="p-2 rounded-xl border w-full"
+          <label className="font-semibold text-slate-700" htmlFor="email">Email address</label>
+          <input className="form-input"
             id="email"
             name="email"
             type="text"
-            placeholder="emailaddress"
+            placeholder="email address" 
             onChange={formik.handleChange}
             value={formik.values.email}
           />
           {formik.touched.email && formik.errors.email ? (
             <div className="text-red-900">{formik.errors.email}</div>
           ) : null}
-          <label htmlFor="password">Password</label>
+          <label className="font-semibold text-slate-700" htmlFor="password">Password</label>
           <div>
-          <input className="p-2 rounded-xl border w-full"
+          <input className="form-input"
             id="password"
             name="password"
             type="password"
@@ -101,28 +100,27 @@ function Signup() {
             <div className="text-red-900">{formik.errors.password}</div>
           ) : null}
 
-          <button type="submit" className="bg-[#007423]  rounded-xl text-white py-2">
+          <button type="submit" className="primary-button mt-2 w-full">
             SignUp
           </button>
           </form>
 
-          <div className="mt-10 grid grid-cols-3 items-centre text-gray-500">
+          <div className="mt-8 grid grid-cols-3 items-center gap-3 text-gray-400">
             <hr></hr>
             <p className="text-center">OR</p>
             <hr></hr>
           </div>
-          <div className="flex justify-between item centre gap-6 my-8">
-           <p >
+          <div className="my-6">
+           <p className="text-sm text-slate-600 sm:text-base">
             Already registered?
-            <Link className=' hover:bg-[#007423]  px-4 py-3 rounded-lg transition ' to="/sign-in">LogIn</Link>
+            <Link className='ml-2 font-semibold text-[#0b6b2b] hover:underline' to="/sign-in">LogIn</Link>
            </p>
           </div>
 
         </div>
 
-        {/* right image */}
-        <div className=" sm:block hidden w-1/2  ">
-          <img className=" h-full rounded-2xl " src="https://images.pexels.com/photos/3571551/pexels-photo-3571551.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" alt =""/>
+        <div className="hidden md:block">
+          <img className="h-full w-full object-cover" src="https://images.pexels.com/photos/3571551/pexels-photo-3571551.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" alt ="Kenya coastline"/>
         </div>
 
       </div>

@@ -1,11 +1,10 @@
-
-import React from "react";
-
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, NavLink } from "react-router-dom";
 import { useUser } from "./UserContext";
 
 function Header() {
   const { setUser } = useUser();
+  const [open, setOpen] = useState(false);
 
   function handleLogoutClick(e) {
     e.preventDefault();
@@ -15,36 +14,53 @@ function Header() {
   }
 
   let id = localStorage.getItem("id");
+  const navClass = ({ isActive }) =>
+    `rounded-lg px-3 py-2 text-sm font-semibold transition ${
+      isActive
+        ? "bg-[#e7f4dc] text-[#0b6b2b]"
+        : "text-slate-700 hover:bg-slate-100 hover:text-[#0b6b2b]"
+    }`;
 
   return (
-    <header className="py-6 border-b">
-      <div className="container mx-auto flex flex-col sm:flex-row justify-between items-center">
-        <div className="mb-4 sm:mb-0">
+    <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur">
+      <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
+        <div>
           <Link
             to="/"
-            className="text-2xl font-semibold leading-none mb-2 sm:mb-0 text-[#007423]"
+            className="flex items-center gap-3 text-xl font-bold leading-tight text-[#0b6b2b] sm:text-2xl"
           >
+            <span className="grid h-10 w-10 place-items-center rounded-lg bg-[#0b6b2b] text-base text-white">
+              DK
+            </span>
             DestinationKenya
           </Link>
         </div>
 
-        <div className="flex items-center gap-8">
-          <Link to="/locations" className="hover:text-[#0dcc46] transition">
+        <button
+          className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold text-slate-700 lg:hidden"
+          onClick={() => setOpen((value) => !value)}
+          type="button"
+        >
+          Menu
+        </button>
+
+        <nav className="hidden items-center gap-2 lg:flex">
+          <NavLink to="/locations" className={navClass}>
             Locations
-          </Link>
-          <Link to="/destinations" className="hover:text-[#0dcc46] transition">
+          </NavLink>
+          <NavLink to="/destinations" className={navClass}>
             Destinations
-          </Link>
+          </NavLink>
           {!id ? (
             <>
-              <Link
-                className="hover:text-[#0dcc46] transition"
+              <NavLink
+                className={navClass}
                 to="/sign-in"
               >
                 Log in
-              </Link>
+              </NavLink>
               <Link
-                className="bg-[#007423] hover:bg-[#0dcc46] text-white px-4 py-3 rounded-lg transition"
+                className="primary-button"
                 to="/sign-up"
               >
                 Sign up
@@ -52,21 +68,53 @@ function Header() {
             </>
           ) : (
             <>
-              <Link
+              <NavLink
                 to="/reviews"
-                className="hover:text-[#0dcc46] transition"
+                className={navClass}
               >
                 My Reviews
-              </Link>
-              <Link to="/logout" className="list">
-                <button onClick={(e) => handleLogoutClick(e)}>
+              </NavLink>
+              <Link to="/logout" onClick={(e) => handleLogoutClick(e)}>
+                <button className="secondary-button" type="button">
                   Logout
                 </button>
               </Link>
             </>
           )}
-        </div>
+        </nav>
       </div>
+
+      {open && (
+        <nav className="border-t border-slate-200 px-4 py-3 lg:hidden">
+          <div className="mx-auto grid max-w-7xl gap-2">
+            <NavLink to="/locations" className={navClass} onClick={() => setOpen(false)}>
+              Locations
+            </NavLink>
+            <NavLink to="/destinations" className={navClass} onClick={() => setOpen(false)}>
+              Destinations
+            </NavLink>
+            {!id ? (
+              <>
+                <NavLink to="/sign-in" className={navClass} onClick={() => setOpen(false)}>
+                  Log in
+                </NavLink>
+                <Link to="/sign-up" className="primary-button" onClick={() => setOpen(false)}>
+                  Sign up
+                </Link>
+              </>
+            ) : (
+              <>
+                <NavLink to="/reviews" className={navClass} onClick={() => setOpen(false)}>
+                  My Reviews
+                </NavLink>
+                <Link to="/logout" className="secondary-button" onClick={(e) => handleLogoutClick(e)}>
+                  Logout
+                </Link>
+              </>
+            )}
+          </div>
+        </nav>
+      )}
     </header>
   );
 }

@@ -7,7 +7,7 @@ function Logout() {
   const { setUser } = useUser();
 
   useEffect(() => {
-    fetch("https://destinations-server-app.onrender.com/logout", {
+    fetch("/logout", {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",

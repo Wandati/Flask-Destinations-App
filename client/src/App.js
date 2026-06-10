@@ -19,6 +19,11 @@ function App() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    if (!id) {
+      setUser(null);
+      return;
+    }
+
     fetch(`/checkuser/${id}`)
       .then((response) => {
         if (response.ok) {
@@ -33,10 +38,10 @@ function App() {
 
   return (
     <UserProvider value={user}>
-      <div className="max-w-[1440px] mx-auto bg-white">
+      <div className="flex min-h-screen flex-col bg-white text-slate-900">
         <Header />
 
-        <main>
+        <main className="page-shell flex-1">
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/locations/:id" element={<Location loading={loading} setLoading={setLoading}/>} />
@@ -49,7 +54,7 @@ function App() {
             <Route path="/logout" element={<Logout />} />
           </Routes>
         </main>
-      {!loading && <Footer />}
+      <Footer />
       </div>
     </UserProvider>
   );

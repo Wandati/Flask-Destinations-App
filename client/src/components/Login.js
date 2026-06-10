@@ -25,7 +25,7 @@ function Login() {
     },
     validationSchema: formSchema,
     onSubmit: (values) => {
-      fetch("https://destinations-server-app.onrender.com/login", {
+      fetch("/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -44,7 +44,6 @@ function Login() {
           if (userData && userData.user_id) {
             setUser(userData);
             localStorage.setItem("id", userData.user_id);
-            alert(`login successful! Welcome ${userData.username}`);
             navigate("/");
           } else {
             console.error("User data is missing 'user_id'");
@@ -57,12 +56,16 @@ function Login() {
   });
 
   return (
-    <section className="flex items-centre justify-center my-40	">
-      <div className="flex rounded-2xl shadow-lg max-w-3xl p-5">
-        <div className="sm:w-1/2 px-8">
-          <h2 className="font-bold text-2xl text-[#1a3813] "> Login </h2>
+    <section className="flex justify-center py-8 sm:py-14">
+      <div className="grid w-full max-w-5xl overflow-hidden rounded-lg bg-white shadow-xl md:grid-cols-2">
+        <div className="px-5 py-8 sm:px-8 lg:px-10">
+          <p className="mb-2 text-sm font-semibold uppercase text-[#0b6b2b]">Welcome back</p>
+          <h1 className="text-3xl font-bold text-slate-900">Log in</h1>
+          <p className="mt-3 text-sm leading-6 text-slate-600">
+            Continue reviewing and managing your destination feedback.
+          </p>
           {loginError ? (
-            <div className="text-red-800 mt-5">
+            <div className="mt-5 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-red-800">
               Invalid username or password
             </div>
           ) : null}
@@ -71,9 +74,9 @@ function Login() {
             onSubmit={formik.handleSubmit}
             className="flex flex-col gap-4 mt-8"
           >
-            <label htmlFor="username">Username</label>
+            <label className="font-semibold text-slate-700" htmlFor="username">Username</label>
             <input
-              className="p-2 rounded-xl border w-full"
+              className="form-input"
               id="username"
               name="username"
               type="text"
@@ -84,10 +87,10 @@ function Login() {
             {formik.touched.username && formik.errors.username ? (
               <div className="text-red-900">{formik.errors.username}</div>
             ) : null}
-            <label htmlFor="password">Password</label>
+            <label className="font-semibold text-slate-700" htmlFor="password">Password</label>
             <div>
               <input
-                className="p-2 rounded-xl border w-full"
+                className="form-input"
                 id="password"
                 name="password"
                 type="password"
@@ -102,22 +105,22 @@ function Login() {
 
             <button
               type="submit"
-              className="bg-[#007423] rounded-xl text-white py-2"
+              className="primary-button mt-2 w-full"
             >
               Login
             </button>
           </form>
 
-          <div className="mt-10 grid grid-cols-3 items-centre text-gray-500">
+          <div className="mt-8 grid grid-cols-3 items-center gap-3 text-gray-400">
             <hr></hr>
             <p className="text-center">OR</p>
             <hr></hr>
           </div>
-          <div className="flex justify-between item centre gap-6 my-8">
-            <p>
+          <div className="my-6">
+            <p className="text-sm text-slate-600 sm:text-base">
               Don't have an account?
               <Link
-                className=" hover:bg-[#007423]  px-4 py-3 rounded-lg transition "
+                className="ml-2 font-semibold text-[#0b6b2b] hover:underline"
                 to="/sign-up"
               >
                 Sign up
@@ -126,11 +129,11 @@ function Login() {
           </div>
         </div>
 
-        <div className=" sm:block hidden w-1/2 ">
+        <div className="hidden md:block">
           <img
-            className=" rounded-2xl h-full"
+            className="h-full w-full object-cover"
             src="https://images.pexels.com/photos/3571551/pexels-photo-3571551.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
-            alt=""
+            alt="Kenya coastline"
           />
         </div>
       </div>

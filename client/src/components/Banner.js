@@ -4,64 +4,91 @@ import { Link } from "react-router-dom";
 
 function Banner() {
   return (
-    <section className="mb-8 lg:mb-24 p-4 md:p-8">
-      <div className="flex flex-col items-center lg:flex-row justify-center lg:justify-between">
-        <div className="lg:ml-0 lg:mr-8 text-center lg:text-left">
-          <h1 className="text-2xl lg:text-4xl font-semibold leading-none mb-3 lg:mb-6">
-            <span className="text-[#007423]">Magical</span> Kenya
-          </h1>
-          <p className="max-w-md mb-6 text-sm lg:text-base">
-            Kenya is a country in East Africa with coastline on the Indian
-            Ocean. It encompasses savannah, lakelands, the dramatic Great Rift
-            Valley, and mountain highlands.
+    <section className="space-y-10 pb-4 sm:pb-8">
+      <div className="relative min-h-[560px] overflow-hidden rounded-lg bg-slate-900 text-white shadow-xl">
+        <img
+          className="absolute inset-0 h-full w-full object-cover"
+          src="https://images.pexels.com/photos/10711116/pexels-photo-10711116.jpeg?auto=compress&cs=tinysrgb&w=1600"
+          alt="Kenya landscape"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/45 to-black/15" />
+        <div className="relative flex min-h-[560px] max-w-3xl flex-col justify-end px-5 py-8 sm:px-8 lg:px-10">
+          <p className="mb-3 text-sm font-semibold uppercase text-[#f2c14e]">
+            Explore Kenya
           </p>
-        </div>
-
-        <div className="mb-6 lg:mb-0">
-          <img
-            className="w-full h-32 lg:h-full object-cover"
-            src="https://media-cdn.tripadvisor.com/media/photo-c/1280x250/14/10/2e/f2/kenya.jpg"
-            alt=""
-          />
+          <h1 className="text-4xl font-bold leading-tight sm:text-5xl lg:text-6xl">
+            Discover places worth planning a trip around.
+          </h1>
+          <p className="mt-5 max-w-2xl text-base leading-8 text-slate-100 sm:text-lg">
+            Browse Kenyan locations, compare destinations, and read visitor
+            reviews before choosing where to go next.
+          </p>
+          <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+            <Link className="primary-button bg-[#f2c14e] text-slate-950 hover:bg-[#ffd166]" to="/destinations">
+              View destinations
+            </Link>
+            <Link className="secondary-button border-white/50 bg-white/10 text-white hover:border-white hover:bg-white hover:text-slate-900" to="/locations">
+              Browse locations
+            </Link>
+          </div>
         </div>
       </div>
 
-      <div className="flex flex-col items-center lg:flex-row justify-center lg:justify-between mt-6 lg:mt-12">
-        <div className="lg:ml-0 lg:mr-8 text-center lg:text-left">
-          <h1 className="text-2xl lg:text-4xl font-semibold leading-none mb-3 lg:mb-6">
-            Visit your Dream <br></br>
-            <span className="text-[#007423] ">Destinations in Kenya</span>
-          </h1>
-          <p className="max-w-md mb-6 text-sm lg:text-base">
-            Experience Kenya like never before with our Destinations App – the
-            ultimate travel companion. From the Maasai Mara to Diani's sandy
-            shores, explore diverse landscapes and cultural treasures.
+      <div className="grid gap-4 sm:grid-cols-3">
+        <div className="surface-panel p-5">
+          <p className="text-3xl font-bold text-[#0b6b2b]">Curated</p>
+          <p className="mt-2 text-sm leading-6 text-slate-600">
+            Browse destinations grouped by Kenyan locations.
           </p>
-          <span className="inline-block bg-[#007423] rounded-full px-3 py-1 text-xs lg:text-sm text-white font-semibold mb-2 hover:bg-[#068f2f]">
-            <Link to={`/destinations`}>Click to view Destinations</Link>
-          </span>
+        </div>
+        <div className="surface-panel p-5">
+          <p className="text-3xl font-bold text-[#0b6b2b]">Reviewed</p>
+          <p className="mt-2 text-sm leading-6 text-slate-600">
+            Read ratings and comments from other travelers.
+          </p>
+        </div>
+        <div className="surface-panel p-5">
+          <p className="text-3xl font-bold text-[#0b6b2b]">Local</p>
+          <p className="mt-2 text-sm leading-6 text-slate-600">
+            Test against your local Flask API during development.
+          </p>
+        </div>
+      </div>
+
+      <div className="grid items-center gap-6 lg:grid-cols-[0.9fr_1.1fr]">
+        <div>
+          <p className="mb-2 text-sm font-semibold uppercase text-[#0b6b2b]">
+            Featured experience
+          </p>
+          <h2 className="text-3xl font-bold leading-tight text-slate-900 sm:text-4xl">
+            Move from inspiration to a shortlist faster.
+          </h2>
+          <p className="mt-4 max-w-xl text-base leading-7 text-slate-600">
+            The app keeps locations, destination details, and reviews close
+            together so the main travel-planning flow stays simple.
+          </p>
         </div>
 
-        <div className="flex flex-col lg:flex-row items-center justify-center">
-          <div className="mb-4 lg:mb-0 mx-3 max-w-xs lg:max-w-[200px]">
+        <div className="grid gap-4 sm:grid-cols-3">
+          <div className="sm:pt-10">
             <img
-              className="w-full h-24 lg:h-40 object-cover"
+              className="h-64 w-full rounded-lg object-cover shadow-sm"
               src="https://images.pexels.com/photos/4253835/pexels-photo-4253835.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-              alt=""
+              alt="Kenya wildlife"
             />
           </div>
-          <div className="mb-4 lg:mb-0 mx-3 max-w-xs lg:max-w-[200px]">
+          <div>
             <img
-              className="w-full h-24 lg:h-40 object-cover"
+              className="h-64 w-full rounded-lg object-cover shadow-sm"
               src="https://images.pexels.com/photos/12959528/pexels-photo-12959528.jpeg?auto=compress&cs=tinysrgb&w=400"
-              alt=""
+              alt="Kenya coast"
             />
           </div>
-          <div className="mx-3 max-w-xs lg:max-w-[300px]">
+          <div className="sm:pt-10">
             <img
-              className="w-full h-24 lg:h-40 object-cover"
+              className="h-64 w-full rounded-lg object-cover shadow-sm"
               src="https://images.pexels.com/photos/10711116/pexels-photo-10711116.jpeg?auto=compress&cs=tinysrgb&w=1600"
-              alt=""
+              alt="Kenya destination"
             />
           </div>
         </div>

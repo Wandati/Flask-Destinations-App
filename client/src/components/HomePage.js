@@ -6,7 +6,7 @@ function HomePage () {
 
   return (
 
-    <div className='min-h-[1600px]'>
+    <div>
       <Banner/>
 
     </div>
