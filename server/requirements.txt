@@ -19,6 +19,7 @@ Mako
 MarkupSafe
 packaging
 PyJWT
+psycopg2-binary
 python-dateutil
 pytz
 six

@@ -7,7 +7,7 @@ export default function Destinations() {
 
   useEffect(() => {
     setLoading(true);
-    fetch("/destinations")
+    fetch("/api/destinations")
       .then((res) => res.json())
       .then((data) => {
         setDestinations(data);

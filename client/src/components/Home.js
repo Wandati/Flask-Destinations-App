@@ -7,7 +7,7 @@ export default function Home({ loading, setLoading }) {
 
   useEffect(() => {
     setLoading(true);
-    fetch("/locations")
+    fetch("/api/locations")
       .then((res) => {
         if (!res.ok) {
           throw new Error("Network response was not ok");

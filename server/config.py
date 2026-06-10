@@ -15,9 +15,16 @@ app = Flask(__name__)
 # Set SECRET_KEY in the environment for any real deployment; the fallback
 # is for local development only.
 app.secret_key = os.environ.get("SECRET_KEY", "dev-only-insecure-key")
-app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///destinations.db'
+# Postgres in production (set DATABASE_URL); local SQLite by default.
+db_uri = os.environ.get("DATABASE_URL", "sqlite:///destinations.db")
+if db_uri.startswith("postgres://"):
+    # SQLAlchemy requires the postgresql:// scheme
+    db_uri = db_uri.replace("postgres://", "postgresql://", 1)
+app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']= False
 app.config['SESSION_COOKIE_HTTPONLY'] = True
+# Set SESSION_COOKIE_SECURE=1 wherever the app is served over HTTPS.
+app.config['SESSION_COOKIE_SECURE'] = os.environ.get("SESSION_COOKIE_SECURE", "0") == "1"
 # Lax blocks the session cookie on cross-site POSTs, mitigating CSRF for
 # this cookie-authenticated API.
 app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'

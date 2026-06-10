@@ -12,7 +12,7 @@ function Review() {
   const user = localStorage.getItem("id");
 
   const updateComment = (reviewId, updatedComment) => {
-    fetch(`/reviews/${reviewId}`, {
+    fetch(`/api/reviews/${reviewId}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -40,7 +40,7 @@ function Review() {
   };
 
   const deleteComment = (reviewId) => {
-    fetch(`/reviews/${reviewId}`, {
+    fetch(`/api/reviews/${reviewId}`, {
       method: "DELETE",
     })
       .then((res) => {
@@ -59,7 +59,7 @@ function Review() {
 
   useEffect(() => {
     if (user) {
-      fetch(`/reviews/${user}`)
+      fetch(`/api/reviews/${user}`)
         .then((res) => {
           if (res.status === 404) {
             return [];

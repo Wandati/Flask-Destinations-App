@@ -7,7 +7,7 @@ function Logout() {
   const { setUser } = useUser();
 
   useEffect(() => {
-    fetch("/logout", {
+    fetch("/api/logout", {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",

@@ -306,19 +306,22 @@ class CreateReviewDestinations(Resource):
         except Exception as e:
             return {"error":str(e)},403
 
-api.add_resource(Login,"/login",endpoint="login")
-api.add_resource(Logout,"/logout",endpoint="logout")
-api.add_resource(Signup,"/signup",endpoint="signup")
-api.add_resource(CheckUser,"/checkuser/<int:id>")
-api.add_resource(CheckSession,"/checksession",endpoint="checksession")
-api.add_resource(ReviewResource, '/reviews')
-api.add_resource(ReviewById, '/reviews/<int:id>')
-api.add_resource(DisplayDestinations, '/destinations',endpoint="destinations")
-api.add_resource(DisplayDestinationsById, '/destinations/<int:id>')
-api.add_resource(DisplayLocations,'/locations',endpoint='/locations')
-api.add_resource(DisplayLocationsById,'/locations/<int:id>')
-api.add_resource(CreateReviewDestinations,"/reviewdestinations",endpoint="reviewdestinations")
-api.add_resource(DestinationReviews,"/destinationreviews/<int:id>")
+# All API routes live under /api so they can't collide with the React
+# Router page paths (/destinations, /locations, ...) when the frontend
+# is served with rewrites in production.
+api.add_resource(Login,"/api/login",endpoint="login")
+api.add_resource(Logout,"/api/logout",endpoint="logout")
+api.add_resource(Signup,"/api/signup",endpoint="signup")
+api.add_resource(CheckUser,"/api/checkuser/<int:id>")
+api.add_resource(CheckSession,"/api/checksession",endpoint="checksession")
+api.add_resource(ReviewResource, '/api/reviews')
+api.add_resource(ReviewById, '/api/reviews/<int:id>')
+api.add_resource(DisplayDestinations, '/api/destinations',endpoint="destinations")
+api.add_resource(DisplayDestinationsById, '/api/destinations/<int:id>')
+api.add_resource(DisplayLocations,'/api/locations',endpoint='/locations')
+api.add_resource(DisplayLocationsById,'/api/locations/<int:id>')
+api.add_resource(CreateReviewDestinations,"/api/reviewdestinations",endpoint="reviewdestinations")
+api.add_resource(DestinationReviews,"/api/destinationreviews/<int:id>")
 
 if __name__=="__main__":
     # Debug mode (interactive debugger + auto-reload) must be opted into;

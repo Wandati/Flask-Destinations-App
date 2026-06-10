@@ -24,7 +24,7 @@ function App() {
       return;
     }
 
-    fetch(`/checkuser/${id}`)
+    fetch(`/api/checkuser/${id}`)
       .then((response) => {
         if (response.ok) {
           return response.json();

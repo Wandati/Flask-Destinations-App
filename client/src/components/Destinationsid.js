@@ -17,7 +17,7 @@ export default function Destinationsid({ loading, setLoading }) {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`/destinations/${id}`)
+    fetch(`/api/destinations/${id}`)
       .then((res) => res.json())
       .then((data) => {
         setDestination(data);

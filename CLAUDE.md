@@ -29,7 +29,8 @@ No backend tests exist. If adding them, use pytest under `server/tests/` with a 
 ### Backend (`server/`)
 
 - `config.py` creates and wires everything: `app`, `db` (re-exported from `models/dbconfig.py`), `api` (Flask-RESTful), `bcrypt`, CORS, and Flask-Migrate. The SQLite database lives at `server/instance/destinations.db`.
-- `app.py` contains ALL route logic as Flask-RESTful `Resource` classes, registered with `api.add_resource()` at the bottom. There are no blueprints.
+- `app.py` contains ALL route logic as Flask-RESTful `Resource` classes, registered with `api.add_resource()` at the bottom. There are no blueprints. All routes live under `/api/` so they never collide with React Router page paths.
+- The database URL comes from `DATABASE_URL` (defaults to local SQLite at `server/instance/destinations.db`; Postgres in production). `SESSION_COOKIE_SECURE=1` should be set wherever the app is served over HTTPS.
 - Import structure is circular by design: `config.py` imports `db` from `models/dbconfig.py`, while `models/user.py` imports `bcrypt` from `config`. Consequently, all backend commands must be run from inside `server/` so these top-level imports resolve.
 
 ### Data model
@@ -46,6 +47,10 @@ Session-cookie based: login/signup store `user_id` in the Flask `session`; `GET 
 ### Frontend (`client/`)
 
 Create React App with all views and components flat in `client/src/components/`; routing via react-router-dom v6 in `App.js`. Forms use Formik + Yup. Styling mixes Tailwind, Bootstrap/react-bootstrap, and `client/src/index.css` — don't add another UI framework.
+
+### Deployment
+
+Frontend on Vercel (Node pinned via `engines` in `client/package.json`); Flask API on Render (root dir `server`, `gunicorn --bind 0.0.0.0:$PORT app:app`); Postgres on Neon. `client/vercel.json` rewrites `/api/*` to the Render service (keeping API calls same-origin so the session cookie works) and falls back to `index.html` for SPA routes. One-time data moves use `server/copy_data.py` (SQLite → `DATABASE_URL`).
 
 ## Conventions
 

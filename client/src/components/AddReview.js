@@ -23,7 +23,7 @@ export default function AddReview() {
     }
 
     try {
-      const response = await fetch(`/destinationreviews/${id}`, {
+      const response = await fetch(`/api/destinationreviews/${id}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
