@@ -10,7 +10,7 @@ A travel destination review app: Flask REST API backend (`server/`) + React fron
 
 Backend (run from `server/`, after `pip install -r requirements.txt`):
 
-- `python app.py` — start the Flask API at http://localhost:5555 (debug mode)
+- `python app.py` — start the Flask API at http://localhost:5555 (set `FLASK_DEBUG=1` for the debugger/auto-reload; off by default)
 - `flask db migrate -m "message"` — generate a migration after model changes
 - `flask db upgrade` — apply migrations
 - `python seed.py` — repopulate local seed data
@@ -41,7 +41,7 @@ No backend tests exist. If adding them, use pytest under `server/tests/` with a 
 
 ### Auth
 
-Session-cookie based: login/signup store `user_id` in the Flask `session`; `GET /checksession` verifies it. The frontend additionally tracks login state in browser sessionStorage. Several `ReviewById` authorization checks in `app.py` are commented out — review endpoints currently trust the `user_id` sent in the request body/URL.
+Session-cookie based: login/signup store `user_id` in the Flask `session`; `GET /checksession` verifies it. Mutating review endpoints derive the user from the session and enforce ownership (401 when not logged in, 403 for another user's review); `PATCH /reviews/<id>` only accepts `rating` and `comment`. The frontend additionally tracks login state in browser localStorage for UI purposes — never trust client-supplied user IDs server-side. Fetches must stay same-origin (relative URLs through the CRA proxy) or the session cookie won't flow.
 
 ### Frontend (`client/`)
 
@@ -52,4 +52,4 @@ Create React App with all views and components flat in `client/src/components/`;
 - Python: PEP 8, 4-space indent, `PascalCase` for model/resource classes.
 - React: functional components, `PascalCase` filenames (e.g. `AddReview.js`).
 - Commits are short and imperative, e.g. `Update Location.js`.
-- Don't commit secrets, session files, local databases, or `__pycache__`/cache output. The Flask secret key and DB URL are currently hardcoded in `config.py`; move them to environment variables before any production work.
+- Don't commit secrets, session files, local databases, or `__pycache__`/cache output. Set `SECRET_KEY` in the environment for any deployment (`config.py` falls back to a dev-only value); the DB URL is still hardcoded in `config.py`.

@@ -5,7 +5,8 @@ from models.reviewdestination import ReviewDestination
 from models.destination import Destination
 from models.user import User
 from flask_restful import Resource
-from flask import jsonify,session,request
+from flask import session,request
+import os
 
 class Signup(Resource):
     def post(self):
@@ -37,7 +38,6 @@ class Login(Resource):
         session["user_id"] = user.id
         new_user = {
                 "username":username,
-                "password":password,
                 "user_id":user.id
             }
         return new_user,200
@@ -53,7 +53,7 @@ class CheckSession(Resource):
 class Logout(Resource):
     def delete(self):
         if "user_id" in session:
-            session["user_id"] = None
+            session.pop("user_id", None)
             return {},204
         return {"error":"Unauthorized action"},401
     
@@ -159,13 +159,15 @@ class ReviewResource(Resource):
 class DestinationReviews(Resource):
     def post(self, id):
         data = request.get_json()
-        
-        user= data['user_id']
-        if not user:
-            return {"error": "log in to Add Review" }
+
+        user_id = session.get("user_id")
+        if not user_id:
+            return {"error": "Log in to add a review"}, 401
         destination = Destination.query.filter_by(id=id).first()
+        if not destination:
+            return {"error": "Destination not found"}, 404
         existing_review = db.session.query(ReviewDestination).\
-            join(Review).filter(Review.user_id == user, ReviewDestination.destination_id == id).first()
+            join(Review).filter(Review.user_id == user_id, ReviewDestination.destination_id == id).first()
         if existing_review:
             return {"error": "Multiple Reviews for the same Destination are not allowed!"}, 403
 
@@ -173,7 +175,7 @@ class DestinationReviews(Resource):
             new_review = Review(
                 rating=data['rating'],
                 comment=data['comment'],
-                user_id=data['user_id']
+                user_id=user_id
             )
 
             db.session.add(new_review)
@@ -183,22 +185,23 @@ class DestinationReviews(Resource):
             db.session.add(new_review_destination)
             db.session.commit()
 
-            response = jsonify({"status": "Ok"})
-            response.headers.add("Access-Control-Allow-Origin", "http://localhost:3000")  
-
             return {"status": "Review Created Successfully.."}, 201
+        except ValueError as e:
+            db.session.rollback()
+            return {"error": str(e)}, 400
         except Exception as e:
-            return{"error":str(e)},401
+            db.session.rollback()
+            return {"error": str(e)}, 400
 
         
         
 class ReviewById(Resource):
     def get(self, id):
-        # if not "user_id" in session:
-        #     return {"error":"Unauthorized"},401
-        # user = User.query.filter_by(id=session["user_id"]).first()
-        user = User.query.filter_by(id=id).first()
-        if not user.id:
+        user_id = session.get("user_id")
+        if not user_id or user_id != id:
+            return {"error":"Unauthorized"},401
+        user = User.query.filter_by(id=user_id).first()
+        if not user:
             return {"error":"Unauthorized"},401
 
         if not user.reviews:
@@ -207,47 +210,50 @@ class ReviewById(Resource):
             {
                 'id': review.id,
                 "username":review.user.username,
-                'rating': review.rating, 
-                'comment': review.comment, 
+                'rating': review.rating,
+                'comment': review.comment,
             }
             for review in user.reviews
         ]
         return reviews,200
-    
+
     def delete(self, id):
-        # if not "user_id" in session:
-        #     return {"error":"Unauthorized"},401
+        user_id = session.get("user_id")
+        if not user_id:
+            return {"error":"Unauthorized"},401
         review = Review.query.filter_by(id=id).first()
         if not review:
-            return {"Error":"Review not Found"}
-        # user = User.query.filter_by(id=session["user_id"]).first()
-        # if review in user.reviews:
+            return {"error":"Review not Found"},404
+        if review.user_id != user_id:
+            return {"error":"Unauthorized"},403
         db.session.delete(review)
         db.session.commit()
         return {'message': 'Review deleted successfully'}
-        # else:
-        # return {'Error': 'Unauthorized or Review not Found'}, 404
 
     def patch(self, id):
+        user_id = session.get("user_id")
+        if not user_id:
+            return {"error":"Unauthorized"},401
         review = Review.query.filter_by(id=id).first()
         if not review:
-            return {"Error":"Review not Found"}
-        # user = User.query.filter_by(id=session["user_id"]).first()
-        # if review in user.reviews:
-        if review:
-            data = request.get_json()  
-            for attr in data:
-                setattr(review,attr,data[attr])
-            db.session.add(review)
-            db.session.commit()
-            return jsonify({
-                'id': review.id,
-                'rating': review.rating,
-                'comment': review.comment,
-                'user_id': review.user_id
-            })
-        else:
-            return {'Error': 'Unauthorized Operation'},403
+            return {"error":"Review not Found"},404
+        if review.user_id != user_id:
+            return {"error":"Unauthorized"},403
+        data = request.get_json()
+        try:
+            for attr in ("rating", "comment"):
+                if attr in data:
+                    setattr(review, attr, data[attr])
+        except ValueError as e:
+            db.session.rollback()
+            return {"error": str(e)}, 400
+        db.session.commit()
+        return {
+            'id': review.id,
+            'rating': review.rating,
+            'comment': review.comment,
+            'user_id': review.user_id
+        }, 200
 
 
 class CreateReviewDestinations(Resource):
@@ -306,4 +312,6 @@ api.add_resource(CreateReviewDestinations,"/reviewdestinations",endpoint="review
 api.add_resource(DestinationReviews,"/destinationreviews/<int:id>")
 
 if __name__=="__main__":
-    app.run(port=5555,debug=True)
+    # Debug mode (interactive debugger + auto-reload) must be opted into;
+    # never enable it on a server reachable by others.
+    app.run(port=5555, debug=os.environ.get("FLASK_DEBUG", "0") == "1")
